@@ -307,6 +307,11 @@ public class User {
 	
     public void removeFirstThing(MyFirst first) {
     	firstThings.remove(first);
+    	for (UserFirstThingRelationship rel: didForFirstTime) {
+    		if (rel.getFirstThing().getId().equals(first.getId())) {
+    			didForFirstTime.remove(rel);
+    		}
+    	}
     }
     
     

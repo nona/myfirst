@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.neo4j.conversion.EndResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,6 +58,17 @@ public class HomepageController {
 			return "login";
 		}
 		return "/myfirsts";
+	}
+	
+	@RequestMapping("/profile/{username}")
+	public String viewProfile(@PathVariable("username") String username, Model model, HttpServletRequest request) {
+		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
+		if (loggedUser == null) {
+			return "login";
+		}
+		UserDto toBeViewed = Mapper.map(userService.findUserByUsername(username), 1);
+		model.addAttribute("viewed", toBeViewed);
+		return "/profile";
 	}
 	
 	@RequestMapping("/*")

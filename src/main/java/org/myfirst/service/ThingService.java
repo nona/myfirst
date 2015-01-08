@@ -59,14 +59,16 @@ public class ThingService {
 	public Set<Thing> addNewThingsByTags(String[] tags) {
 		Set<Thing> result = new HashSet<Thing>();
 		for (String tag: tags) {
-			Thing existingThing = thingRepository.findByTag(tag);
-			
-			if (existingThing == null) {
-				existingThing = new Thing();
-				existingThing.setTag(tag);
-				existingThing = thingRepository.save(existingThing);
+			if (tag != null && tag.trim().length() >= 3) {
+				Thing existingThing = thingRepository.findByTag(tag);
+				
+				if (existingThing == null) {
+					existingThing = new Thing();
+					existingThing.setTag(tag);
+					existingThing = thingRepository.save(existingThing);
+				}
+				result.add(existingThing);
 			}
-			result.add(existingThing);
 		}
 		return result;
 	}

@@ -33,11 +33,10 @@
 		      <c:forEach items="${users}" var="user">
 		        <div id="wrapper">
 					<div class="box form" id="general">
-					<form action="/myfirst/account/" method="get">			
+					<form action="/myfirst/profile/${user.username}" method="get">			
 			        <p>
 			          ${user.username} - ${user.firstName} ${user.lastName}
-			          <input type="hidden" value='${user.username}' name="username"/>
-			          <img class="small_icon" src="<c:url value='/resources/images/account.png'/>" alt="View Profile" title="View Profile"/>
+			          <input type="submit" value="" class="imgClass account" alt="View Profile" title="View Profile"/>
 			        </p>
 					</form>
 			        </div> 

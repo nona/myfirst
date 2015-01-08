@@ -20,6 +20,43 @@
 </jsp:include>
 
 <div id="container">
+    <div class="box form controls">
+    <table> 
+    <tr>
+    <td>
+			<%if(user.getProfilePhotoLink() != null && !user.getProfilePhotoLink().isEmpty()){ %>
+	        <img class="profile_picture" src="<%=user.getProfilePhotoLink()%>" alt="Profile picture"/>
+	        <%} else { %>
+	        <img class="profile_picture" src="<c:url value='/resources/images/profile.png'/>" alt="Profile picture"/>
+	        <%} %>
+	</td>
+	<td>
+		<b>@<%=user.getUsername() %></b>
+		<br/>
+		<%=user.getFirstName() + " " + (user.getMiddleName() != null && user.getMiddleName().length() > 0 ? user.getMiddleName() + " " : "") + user.getLastName()%>
+    	<br/>
+    	<b>First things:</b> <%=user.getFirstThingsCount() %>
+    </td>
+    </tr>
+    <tr>
+    <td colspan="2">
+		<b>Date Of Birth:</b>
+		<br/><%=user.getDateOfBirth() %>
+		<br/>
+		<b>Country:</b>
+		<br/><%=user.getCountry() %>
+		<br/>
+		<b>Email:</b>
+		<br/><%=user.getEmail() %>
+		<br/><b>Interests:</b>
+		<br/>
+		       <%for (ThingDto t: user.getInterests()) { %>
+                	<%="#" + t.getTag() %><a href="#" onclick="removeInterest('<%=t.getTag()%>');">
+                <%} %>
+	</td>
+	</tr>
+    </table>
+    </div>
 <%
 for (MyFirstDto first: user.getFirstThings()) { %>
 <div id="wrapper">
