@@ -1,0 +1,145 @@
+package org.myfirst.controller;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.myfirst.domain.MyFirst;
+import org.myfirst.domain.Thing;
+import org.myfirst.domain.User;
+import org.myfirst.dto.Mapper;
+import org.myfirst.dto.UserDto;
+import org.myfirst.service.FTPFunctions;
+import org.myfirst.service.ThingService;
+import org.myfirst.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.neo4j.conversion.EndResult;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+@Controller
+public class HomepageController {
+	
+	@Autowired
+	private ThingService thingService;
+
+	@Autowired
+	private UserService userService;
+	
+	@RequestMapping("/home")
+	public String getHomePage(HttpServletRequest request) {
+
+		EndResult<MyFirst> m = thingService.findAllFirstThings();
+		for (MyFirst t: m) {
+			System.out.println(">>>" + t.getTitle() + " " + t.getDescription() + " " +t.getId());
+		}
+		
+		
+		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
+		if (loggedUser == null) {
+			return "login";
+		}
+		return "home";
+	}
+	
+	@RequestMapping("/myfirsts")
+	public String getMyFirsts(HttpServletRequest request) {
+		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
+		if (loggedUser == null) {
+			return "login";
+		}
+		return "/myfirsts";
+	}
+	
+	@RequestMapping("/*")
+	public String getPage(HttpServletRequest request) {
+		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
+		if (loggedUser == null) {
+			return "redirect:login";
+		}
+		return "redirect:home";
+	}
+	
+    @RequestMapping(value = "/addFirstThing")
+    public String addFirstThing(Model model, @RequestParam("visibility") String visibility, 
+    		@RequestParam("description") String description, @RequestParam("tags") String tags,
+    		@RequestParam("title") String title, @RequestParam("file") MultipartFile file,
+    		HttpServletRequest request) {
+
+		String username = ((UserDto)request.getSession().getAttribute("loggedUser")).getUsername();
+		
+		String[] tagsArray = tags.split(" |,|;|#");
+		Set<Thing> things = thingService.addNewThingsByTags(tagsArray);
+		boolean isImageAdded = false;
+		String name = null;
+		
+		if (!file.isEmpty()) {
+	    	User existingUser = userService.findUserByUsername(username);
+
+	    	String extension = "";
+	    	String fileName = file.getOriginalFilename();
+	    	int i = fileName.lastIndexOf('.');
+	    	if (i >= 0) {
+	    	    extension = fileName.substring(i);
+	    	}
+	        name = existingUser.getId().toString() + "_" + existingUser.getMediaIndex() + extension;
+			FTPFunctions ftp;
+			try {
+				ftp = new FTPFunctions("my1st.net", 21, "my1stne", "5I#%f8T$");
+				ftp.uploadFTPFile(file, name, "/public_html/images/");
+				ftp.disconnect();
+				isImageAdded = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		MyFirst first = new MyFirst();
+		first.setDescription(description);
+		first.setVisibility(visibility);
+		first.setTitle(title);
+		first.setTags(things);
+		if (isImageAdded) {
+			first.setImage("http://my1st.net/images/" + name);
+		}
+		UserDto existingUserDto = Mapper.map(thingService.addNewFirstThingByUser(first, username, isImageAdded), 1);
+		request.getSession().setAttribute("loggedUser", existingUserDto);
+        return "/myfirsts";
+    }
+    
+    @RequestMapping(value = "/deleteFirstThing")
+    public String deleteFirstThing(Model model, @RequestParam("firstThingId") String firstThingId, 
+    		HttpServletRequest request) {
+
+		String username = ((UserDto)request.getSession().getAttribute("loggedUser")).getUsername();
+		
+		MyFirst first = thingService.findMyFirstThingById(new Long(firstThingId));
+		String link = first.getImage();
+		
+		if (first != null && link != null) {
+			FTPFunctions ftp;
+			try {
+				ftp = new FTPFunctions("my1st.net", 21, "my1stne", "5I#%f8T$");
+				ftp.deleteFTPFile("/public_html/images/" + link.substring(link.lastIndexOf("/") + 1));
+				ftp.disconnect();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		UserDto existingUserDto = Mapper.map(thingService.removeFirstThingFromUser(first, username), 1);
+		request.getSession().setAttribute("loggedUser", existingUserDto);
+        return "/myfirsts";
+    }
+	
+}

@@ -1,0 +1,12 @@
+Description
+===========
+Social network for the first things in life.
+
+
+Building
+========
+maven clean compile install
+
+Notes
+=====
+Enjoy!
