@@ -43,6 +43,10 @@ public class HomepageController {
 			System.out.println(">>>" + t.getTitle() + " " + t.getDescription() + " " +t.getId());
 		}
 		
+		List<User> u = userService.readAll();
+		for (User t: u) {
+			System.out.println(">>>" + t.getUsername() + " " + t.getFirstName() + " " +t.getId());
+		}
 		
 		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
 		if (loggedUser == null) {

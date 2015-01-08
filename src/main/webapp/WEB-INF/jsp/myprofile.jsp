@@ -105,6 +105,7 @@
                 <p> 
                 	<label for="newCountry" >Your country</label>
                     <select id="newCountry">
+                    <option value="">-</option>
                     <% ArrayList<String> countries = Constants.getCountries();
                     for (String country: countries) { %>
                       <option value="<%=country%>" <%if(country.equals(user.getCountry())) {%>selected="selected"<%} %>>

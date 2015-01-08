@@ -2,6 +2,7 @@ package org.myfirst.controller;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,7 +36,7 @@ public class SearchController {
         if (query != null && !query.isEmpty()) {
         	Page<Thing> things = thingService.searchFor(query, new PageRequest(0, 50));
             model.addAttribute("things", Mapper.mapThingsList(things.getContent()));
-        	List<UserDto> users = Mapper.map(userService.searchFor(query));
+        	Set<UserDto> users = Mapper.mapUsersSet(userService.searchFor(query), 1);
             model.addAttribute("users", users);
             model.addAttribute("query", query);
         } else {
@@ -53,7 +54,7 @@ public class SearchController {
 		
 		UserDto existingUserDto = Mapper.map(userService.follow(followed, loggedUser), 1);
 		request.getSession().setAttribute("loggedUser", existingUserDto);
-        return "/results";
+        return "/profile/" + username;
     }
     
 }

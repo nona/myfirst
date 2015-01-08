@@ -19,11 +19,11 @@ public class User {
 	private String firstName;
 	private String lastName;
 	
-	@Indexed
+	@Indexed(unique=true)
 	private String username;
 	private String password;
 	
-	@Indexed
+	@Indexed(unique=true)
 	private String email;
 	
 	private String country;
@@ -58,7 +58,7 @@ public class User {
 	@Fetch @RelatedToVia(type = "MEMBER_OF")
 	private Set<InterestedRelationship> interestedTo;
 	
-	@Fetch @RelatedToVia(type = "FOLLOWS_EVENT")
+	@Fetch @RelatedToVia(type = "FOLLOWS")
 	private Set<FollowRelationship> followsRelationship;
 	
 	private String profilePhotoLink;

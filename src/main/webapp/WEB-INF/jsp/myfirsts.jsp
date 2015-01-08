@@ -71,7 +71,9 @@ for (MyFirstDto first: user.getFirstThings()) { %>
 		</span>
 	</div>
 	<hr class="line"/>
+	<%if (first.getImage() != null && !first.getImage().isEmpty()) { %>
 	<img alt="image" src="<%=first.getImage()%>">
+	<%} %>
 	<p>
 	<%=first.getDescription()%>
 	</p>

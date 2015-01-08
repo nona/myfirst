@@ -1,11 +1,14 @@
 package org.myfirst.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.myfirst.domain.User;
 import org.myfirst.repository.RoleRepository;
 import org.myfirst.repository.UserRepository;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.conversion.EndResult;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,8 @@ public class UserService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired private GraphDatabaseService graphDb;
 	
 	public User create(User user) {
 		User existingUser = userRepository.findByUsername(user.getUsername());
@@ -64,30 +69,31 @@ public class UserService {
 		return users;
 	}
 	
-	public List<User> searchFor(String input) {
-		List<User> users = new ArrayList<User>();
-		User user = userRepository.findByUsername(input);
-		if (user != null) {
-			users.add(user);
+	public HashSet<User> searchFor(String input) {
+		HashSet<User> result = new HashSet<User>();
+		EndResult<User> found;
+		found = userRepository.findAllByPropertyValue("username", input);
+		for (User u: found) {
+			result.add(u);
 		}
-		user = userRepository.findByPropertyValue("firstName", input);
-		if (user != null) {
-			users.add(user);
+		found = userRepository.findAllByPropertyValue("firstName", input);
+		for (User u: found) {
+			result.add(u);
 		}
-		user = userRepository.findByPropertyValue("middleName", input);
-		if (user != null) {
-			users.add(user);
+		found = userRepository.findAllByPropertyValue("middleName", input);
+		for (User u: found) {
+			result.add(u);
 		}
-		user = userRepository.findByPropertyValue("lastName", input);
-		if (user != null) {
-			users.add(user);
+		found = userRepository.findAllByPropertyValue("lastName", input);
+		for (User u: found) {
+			result.add(u);
 		}
-		user = userRepository.findByEmail(input);
-		if (user != null) {
-			users.add(user);
+		found = userRepository.findAllByPropertyValue("email", input);
+		for (User u: found) {
+			result.add(u);
 		}
 		
-		return users;
+		return result;
 	}
 	
 	public User findUserByUsername(String input) {
@@ -133,6 +139,19 @@ public class UserService {
 		
 		userRepository.delete(existingUser);
 		return true;
+	}
+	
+	public void deleteUserById(Long id) {
+		Transaction tx = graphDb.beginTx();
+		try {
+			System.out.println("deleting...");
+			userRepository.delete(id);
+			tx.success(); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			tx.finish();
+		}
 	}
 	
 	public User follow(User followed, String username) {

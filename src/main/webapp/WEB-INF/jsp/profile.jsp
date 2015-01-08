@@ -43,27 +43,23 @@
     </tr>
     <tr>
     <td colspan="2">
+    <c:if test="${not empty viewed.dateOfBirth}">
 		<b>Date Of Birth:</b>
 		<br/>${viewed.dateOfBirth}
 		<br/>
+    </c:if>
+    <c:if test="${not empty viewed.country}">
 		<b>Country:</b>
 		<br/>${viewed.country}
 		<br/>
-		<br/><b>Interests:</b>
-		<br/>
+    </c:if>
 		  	<c:choose>
 			  <c:when test="${not empty viewed.interests}">
+			  <b>Interests:</b>
 			      <c:forEach items="${viewed.interests}" var="thing">
 			          #${thing.tag} 
 			      </c:forEach>
 			  </c:when>
-			  <c:otherwise>
-			  <div id="wrapper">
-				<div class="box form" id="general">
-			    No interests have been added yet.
-			    </div>
-			    </div>
-			  </c:otherwise>
 			</c:choose>
 	</td>
 	</tr>

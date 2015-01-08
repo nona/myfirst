@@ -52,8 +52,7 @@
 				        </tr>
 				        <tr>
 				        <td>
-						<form action="/myfirst/viewProfile" method="get" class="inline">	
-				          <input type="hidden" value='${user.username}' name="username"/>
+						<form action="/myfirst/profile/${user.username}" method="get" class="inline">	
 				          <input type="submit" value="" class="imgClass account"/>
 						</form>
 						<form action="/myfirst/addFriend" method="get" class="inline">	

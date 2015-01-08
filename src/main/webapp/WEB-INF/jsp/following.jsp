@@ -35,7 +35,8 @@
 					<div class="box form" id="general">
 					<form action="/myfirst/profile/${user.username}" method="get">			
 			        <p>
-			          ${user.username} - ${user.firstName} ${user.lastName}
+			          @${user.username} 
+			          <br/>${user.firstName} ${user.lastName}
 			          <input type="submit" value="" class="imgClass account" alt="View Profile" title="View Profile"/>
 			        </p>
 					</form>
