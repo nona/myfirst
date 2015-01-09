@@ -40,7 +40,7 @@ public class LogInController {
 			return "login";
 		}
 		UserDto userDto = new UserDto();
-		userDto = Mapper.map(loggedUser, 1);
+		userDto = Mapper.map(loggedUser, 1, false);
 		model.addAttribute("loggedUser", userDto);
 	    return "home";
 	}
@@ -69,7 +69,7 @@ public class LogInController {
 		newRole.setRole(2);
 		newUser.setRole(newRole);
 		
-		UserDto newUserDto = Mapper.map(service.register(newUser), 1);
+		UserDto newUserDto = Mapper.map(service.register(newUser), 1, false);
 		request.getSession().setAttribute("loggedUser", newUserDto);
 		return "home";
 	}

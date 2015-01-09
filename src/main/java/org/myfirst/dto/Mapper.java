@@ -13,7 +13,7 @@ import org.myfirst.dto.UserDto;
 
 public class Mapper {
 
-	public static UserDto map(User user, int depth) {
+	public static UserDto map(User user, int depth, boolean followed) {
 			UserDto dto = new UserDto();
 			dto.setId(user.getId());
 			dto.setUsername(user.getUsername());
@@ -27,31 +27,38 @@ public class Mapper {
 			dto.setInterests(mapThings(user.getInterests()));
 			dto.setFirstThingsCount(user.getFirstThings() == null ? 0 : user.getFirstThings().size());
 			dto.setFirstThings(mapFirstThings(user.getDidForFirstTime()));
-			dto.setFollowers(mapUsersSet(user.getFollowers(), depth));
-			dto.setFollowing(mapUsersSet(user.getFollows(), depth));
+			dto.setFollowers(mapUsersSet(user.getFollowers(), depth, user.getFollows()));
+			dto.setFollowing(mapUsersSet(user.getFollows(), depth, null));
 			dto.setRole(user.getRole() != null ? user.getRole().getRole() : 2);
 			dto.setFollowingCount(user.getFollows().size());
 			dto.setFollowersCount(user.getFollowers().size());
 			dto.setProfilePhotoLink(user.getProfilePhotoLink());
 			dto.setMediaIndex(user.getMediaIndex());
+			dto.setFollowing(followed);
 			return dto;
 	}
 	
 	public static List<UserDto> map(List<User> users) {
 		List<UserDto> dtos = new ArrayList<UserDto>();
 		for (User user: users) {
-			dtos.add(map(user, 2));
+			dtos.add(map(user, 2, false));
 		}
 		return dtos;
 	}
 	
-	public static Set<UserDto> mapUsersSet(Set<User> users, int depth) {
+	public static Set<UserDto> mapUsersSet(Set<User> users, int depth, Set<User> following) {
 		if (depth > 1) {
 			return null;
 		} else {
 			Set<UserDto> dtos = new HashSet<UserDto>();
 			for (User user: users) {
-				dtos.add(map(user, 2));
+				if (following != null && following.size() > 0 && following.contains(user)) {
+					System.out.println(">> following:: " + user.getUsername());
+					dtos.add(map(user, 2, true));
+				} else {
+					System.out.println(">> not following:: " + user.getUsername());
+					dtos.add(map(user, 2, false));
+				}
 			}
 			return dtos;
 		}

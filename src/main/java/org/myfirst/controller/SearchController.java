@@ -1,7 +1,6 @@
 package org.myfirst.controller;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,29 +31,21 @@ public class SearchController {
 	
 	
     @RequestMapping(value = "/search", method = RequestMethod.GET, headers = "Accept=text/html")
-    public String findRecords(Model model, @RequestParam("q") String query) {
+    public String findRecords(Model model, @RequestParam("q") String query, HttpServletRequest request) {
         if (query != null && !query.isEmpty()) {
-        	Page<Thing> things = thingService.searchFor(query, new PageRequest(0, 50));
-            model.addAttribute("things", Mapper.mapThingsList(things.getContent()));
-        	Set<UserDto> users = Mapper.mapUsersSet(userService.searchFor(query), 1);
+        	String username = ((UserDto)request.getSession().getAttribute("loggedUser")).getUsername();
+        	User user = userService.findUserByUsername(username);
+//        	Page<Thing> things = thingService.searchFor(query, new PageRequest(0, 50));
+//            model.addAttribute("things", Mapper.mapThingsList(things.getContent()));
+        	Set<UserDto> users = Mapper.mapUsersSet(userService.searchFor(query), 1, user.getFollows());
             model.addAttribute("users", users);
+            model.addAttribute("seeker", user.getUsername());
             model.addAttribute("query", query);
         } else {
             model.addAttribute("users", Collections.emptyList());
         }
         model.addAttribute("query", query);
         return "/results";
-    }
-    
-    @RequestMapping(value = "/addFriend", method = RequestMethod.GET, headers = "Accept=text/html")
-    public String addFriend(Model model, @RequestParam("username") String username, HttpServletRequest request) {
-		String loggedUser = ((UserDto)request.getSession().getAttribute("loggedUser")).getUsername();
-		
-		User followed = userService.findUserByUsername(username);
-		
-		UserDto existingUserDto = Mapper.map(userService.follow(followed, loggedUser), 1);
-		request.getSession().setAttribute("loggedUser", existingUserDto);
-        return "/profile/" + username;
     }
     
 }

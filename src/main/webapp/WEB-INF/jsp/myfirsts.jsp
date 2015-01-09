@@ -40,19 +40,28 @@
     </tr>
     <tr>
     <td colspan="2">
+    <%if (user.getDateOfBirth() != null) {%>
 		<b>Date Of Birth:</b>
 		<br/><%=user.getDateOfBirth() %>
 		<br/>
+	<%} %>
+	<%if (user.getCountry() != null) { %>
 		<b>Country:</b>
 		<br/><%=user.getCountry() %>
 		<br/>
+	<%} %>
 		<b>Email:</b>
 		<br/><%=user.getEmail() %>
-		<br/><b>Interests:</b>
+		<br/>
+		<b>Interests:</b>
+	<%if (user.getInterests() != null && !user.getInterests().isEmpty()) { %>
 		<br/>
 		       <%for (ThingDto t: user.getInterests()) { %>
                 	<%="#" + t.getTag() %><a href="#" onclick="removeInterest('<%=t.getTag()%>');">
                 <%} %>
+	<%} else {%>
+		You haven't added any interests yet.
+	<%} %>
 	</td>
 	</tr>
     </table>

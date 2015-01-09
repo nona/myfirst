@@ -1,6 +1,5 @@
 package org.myfirst.controller;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -47,7 +46,7 @@ public class HomepageController {
 		for (User t: u) {
 			System.out.println(">>>" + t.getUsername() + " " + t.getFirstName() + " " +t.getId());
 		}
-		
+		//userService.deleteUserById((long)3);
 		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
 		if (loggedUser == null) {
 			return "login";
@@ -68,9 +67,20 @@ public class HomepageController {
 	public String viewProfile(@PathVariable("username") String username, Model model, HttpServletRequest request) {
 		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
 		if (loggedUser == null) {
+			
 			return "login";
 		}
-		UserDto toBeViewed = Mapper.map(userService.findUserByUsername(username), 1);
+		UserDto toBeViewed = Mapper.map(userService.findUserByUsername(username), 1, false);
+		if(loggedUser.getFollowing() != null && loggedUser.getFollowing().contains(toBeViewed)) {
+			toBeViewed.setFollowing(true);
+		} else {
+			toBeViewed.setFollowing(false);
+		}
+		if (toBeViewed.getFollowing() != null && toBeViewed.getFollowing().contains(loggedUser)) {
+			toBeViewed.setFollowingMe(true);
+		} else {
+			toBeViewed.setFollowingMe(false);
+		}
 		model.addAttribute("viewed", toBeViewed);
 		return "/profile";
 	}
@@ -127,7 +137,7 @@ public class HomepageController {
 		if (isImageAdded) {
 			first.setImage("http://my1st.net/images/" + name);
 		}
-		UserDto existingUserDto = Mapper.map(thingService.addNewFirstThingByUser(first, username, isImageAdded), 1);
+		UserDto existingUserDto = Mapper.map(thingService.addNewFirstThingByUser(first, username, isImageAdded), 1, false);
 		request.getSession().setAttribute("loggedUser", existingUserDto);
         return "/myfirsts";
     }
@@ -153,7 +163,7 @@ public class HomepageController {
 			
 		}
 		
-		UserDto existingUserDto = Mapper.map(thingService.removeFirstThingFromUser(first, username), 1);
+		UserDto existingUserDto = Mapper.map(thingService.removeFirstThingFromUser(first, username), 1, false);
 		request.getSession().setAttribute("loggedUser", existingUserDto);
         return "/myfirsts";
     }

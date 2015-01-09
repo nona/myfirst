@@ -29,7 +29,7 @@
     </p>
     </div>
   			<c:choose>
-			  <c:when test="${not empty users or not empty things}">
+			  <c:when test="${not empty users}">
 			      <c:forEach items="${users}" var="user">
 			        <div id="wrapper">
 						<div class="box form" id="general">
@@ -55,30 +55,33 @@
 						<form action="/myfirst/profile/${user.username}" method="get" class="inline">	
 				          <input type="submit" value="" class="imgClass account"/>
 						</form>
+						<c:choose>
+		  				<c:when test="${!user.following and seeker != user.username}">
 						<form action="/myfirst/addFriend" method="get" class="inline">	
 				          <input type="hidden" value='${user.username}' name="username"/>
-				          <input type="submit" value="" class="imgClass follow"/>
+				          <input type="submit" value="" class="imgClass follow" title="Follow"/>
 						</form>
+    					</c:when>
+						<c:otherwise>
+						<c:if test="${seeker != user.username}">
+    					<form action="/myfirst/removeFriend" method="get" class="inline">	
+				          <input type="hidden" value='${user.username}' name="username"/>
+				          <input type="submit" value="" class="imgClass unfollow" title="Unfollow"/>
+						</form>
+						</c:if>
+						</c:otherwise>
+						</c:choose>
 				        </td>
 				        </tr>
 				        </table>
 				        </div> 
 				    </div>
 			      </c:forEach>
-			      <c:forEach items="${things}" var="thing">
-			      <div id="wrapper">
-						<div class="box form" id="general">
-			        <p>
-			          ${thing.tag}
-			        </p>
-			        </div>
-			        </div>
-			      </c:forEach>
 			  </c:when>
 			  <c:otherwise>
 			  <div id="wrapper">
 				<div class="box form" id="general">
-			    No users or things found for query &quot;${query}&quot;.
+			    No users found for query &quot;${query}&quot;.
 			    </div>
 			    </div>
 			  </c:otherwise>

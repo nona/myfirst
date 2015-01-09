@@ -395,7 +395,24 @@ p.change_link{
 }
 /** Styling both forms **/
 #register, 
-#login,
+#login {
+	position: absolute;
+	top: 0px;
+	width: 88%;	
+	padding: 18px 6% 60px 6%;
+	margin: 0 0 10px 0;
+	background: rgb(247, 247, 247);
+	border: 1px solid rgba(147, 184, 189,0.8);
+	-webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),	0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+	   -moz-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),	0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+	        box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),	0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+	-webkit-box-shadow: 5px;
+	-moz-border-radius: 5px;
+		 border-radius: 5px;
+	opacity: 0.8;
+	filter: alpha(opacity=80); /* For IE8 and earlier */
+	
+}
 .box{
 	position: initial;
 	top: 0px;
@@ -544,6 +561,9 @@ ul#nav li a:hover,ul#nav li.active a{
 }
 .follow {
 	background-image: url("../images/plus.png");
+}
+.unfollow {
+	background-image: url("../images/minus.png");
 }
 .account {
 	background-image: url("../images/account.png");

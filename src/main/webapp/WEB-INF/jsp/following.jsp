@@ -33,13 +33,35 @@
 		      <c:forEach items="${users}" var="user">
 		        <div id="wrapper">
 					<div class="box form" id="general">
-					<form action="/myfirst/profile/${user.username}" method="get">			
-			        <p>
-			          @${user.username} 
-			          <br/>${user.firstName} ${user.lastName}
-			          <input type="submit" value="" class="imgClass account" alt="View Profile" title="View Profile"/>
-			        </p>
-					</form>
+					<table>
+				        <tr>
+				        <td rowspan="2">
+					        <c:choose> 
+							  <c:when test="${!empty user.profilePhotoLink}">
+							   <img class="profile_picture" src="${user.profilePhotoLink}" alt="Profile picture"/>
+							  </c:when>
+							  <c:otherwise>
+							    <img class="profile_picture" src="<c:url value='/resources/images/profile.png'/>" alt="Profile picture"/>
+							  </c:otherwise>
+							</c:choose>
+				        </td>
+				        <td>
+				          @${user.username}<br/>
+						  ${user.firstName} ${user.lastName}
+				        </td>
+				        </tr>
+				        <tr>
+				        <td>
+						<form action="/myfirst/profile/${user.username}" method="get" class="inline">	
+				          <input type="submit" value="" class="imgClass account" title="View Profile"/>
+						</form>
+						<form action="/myfirst/removeFriend" method="get" class="inline">	
+				          <input type="hidden" value='${user.username}' name="username"/>
+				          <input type="submit" value="" class="imgClass unfollow" title="Unfollow"/>
+						</form>
+				        </td>
+				        </tr>
+				        </table>
 			        </div> 
 			    </div>
 		      </c:forEach>

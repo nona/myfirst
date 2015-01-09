@@ -19,7 +19,7 @@
 		<td colspan="4">
 			<div>
 				<form action="/myfirst/search" method="get">
-				    <input id="searchFor" type="text" name="q" placeholder="Search for things or people"/>
+				    <input id="searchFor" type="text" name="q" placeholder="Search for people"/>
 				    <input type="submit" value="" class="imgClass search"/>
 				</form>
 			</div>

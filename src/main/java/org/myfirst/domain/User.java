@@ -19,11 +19,11 @@ public class User {
 	private String firstName;
 	private String lastName;
 	
-	@Indexed(unique=true)
+	@Indexed
 	private String username;
 	private String password;
 	
-	@Indexed(unique=true)
+	@Indexed
 	private String email;
 	
 	private String country;
@@ -39,9 +39,9 @@ public class User {
 	
 	@Fetch @RelatedTo(type = "FOLLOWS", direction = Direction.INCOMING)
 	private Set<User> followers;
-	
-	@Fetch @RelatedTo(type = "FOLLOWS", direction = Direction.BOTH)
-	private Set<User> friends;
+//	
+//	@Fetch @RelatedTo(type = "FOLLOWS", direction = Direction.BOTH)
+//	private Set<User> friends;
 	
 	@Fetch @RelatedTo(type = "HAS_ROLE")
 	private Role role;
@@ -58,8 +58,8 @@ public class User {
 	@Fetch @RelatedToVia(type = "MEMBER_OF")
 	private Set<InterestedRelationship> interestedTo;
 	
-	@Fetch @RelatedToVia(type = "FOLLOWS")
-	private Set<FollowRelationship> followsRelationship;
+//	@Fetch @RelatedToVia(type = "FOLLOWS")
+//	private Set<FollowRelationship> followsRelationship;
 	
 	private String profilePhotoLink;
 	
@@ -210,13 +210,13 @@ public class User {
 		this.followers = followers;
 	}
 
-	public Set<User> getFriends() {
-		return friends;
-	}
-
-	public void setFriends(Set<User> friends) {
-		this.friends = friends;
-	}
+//	public Set<User> getFriends() {
+//		return friends;
+//	}
+//
+//	public void setFriends(Set<User> friends) {
+//		this.friends = friends;
+//	}
 
 	public Set<MyFirst> getFirstThings() {
 		return firstThings;
@@ -259,14 +259,12 @@ public class User {
     	interests.remove(thing);
     }
 
-    public FollowRelationship follow(User user) {
-    	FollowRelationship follow = new FollowRelationship(this, user);
-    	followsRelationship.add(follow);
-    	return follow;
+    public void follow(User user) {
+    	follows.add(user);
     }
     
     public void unfollow(User user) {
-    	followsRelationship.remove(user);
+    	follows.remove(user);
     }
 
 	public String getProfilePhotoLink() {
@@ -297,13 +295,13 @@ public class User {
 		this.didForFirstTime = didForFirstTime;
 	}
 
-	public Set<FollowRelationship> getFollowsRelationship() {
-		return followsRelationship;
-	}
-
-	public void setFollowsRelationship(Set<FollowRelationship> followsRelationship) {
-		this.followsRelationship = followsRelationship;
-	}
+//	public Set<FollowRelationship> getFollowsRelationship() {
+//		return followsRelationship;
+//	}
+//
+//	public void setFollowsRelationship(Set<FollowRelationship> followsRelationship) {
+//		this.followsRelationship = followsRelationship;
+//	}
 	
     public void removeFirstThing(MyFirst first) {
     	firstThings.remove(first);

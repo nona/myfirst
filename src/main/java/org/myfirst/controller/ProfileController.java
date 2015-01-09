@@ -12,7 +12,6 @@ import org.myfirst.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,7 +52,7 @@ public class ProfileController {
 		existingUser.setDateOfBirth(dateOfBirth);
 		existingUser.setCountry(country);
 		
-		UserDto existingUserDto = Mapper.map(userService.update(existingUser), 1);
+		UserDto existingUserDto = Mapper.map(userService.update(existingUser), 1, false);
 		request.getSession().setAttribute("loggedUser", existingUserDto);
 		return "home";
 	}
@@ -89,7 +88,7 @@ public class ProfileController {
 				}
 				existingUser.setProfilePhotoLink("http://my1st.net/images/" + name);
 
-				UserDto existingUserDto = Mapper.map(userService.update(existingUser), 1);
+				UserDto existingUserDto = Mapper.map(userService.update(existingUser), 1, false);
 				request.getSession().setAttribute("loggedUser", existingUserDto);
 				
 		        return "myprofile";
@@ -113,7 +112,7 @@ public class ProfileController {
 		existingUser.setUsername(username);
 		existingUser.setPassword(password);
 		
-		UserDto existingUserDto = Mapper.map(userService.changePassword(existingUser), 1);
+		UserDto existingUserDto = Mapper.map(userService.changePassword(existingUser), 1, false);
 		request.getSession().setAttribute("loggedUser", existingUserDto);
 		return "myprofile";
 	}
@@ -126,7 +125,7 @@ public class ProfileController {
 		Thing newThing = new Thing();
 		newThing.setTag(newInterest);
 		
-		UserDto existingUserDto = Mapper.map(thingService.addNewThingByUser(newThing, username), 1);
+		UserDto existingUserDto = Mapper.map(thingService.addNewThingByUser(newThing, username), 1, false);
 		request.getSession().setAttribute("loggedUser", existingUserDto);
 		return "myprofile";
 	}
@@ -136,7 +135,7 @@ public class ProfileController {
 			HttpServletRequest request) {
 		String username = ((UserDto)request.getSession().getAttribute("loggedUser")).getUsername();
 		
-		UserDto existingUserDto = Mapper.map(thingService.removeInterestFromUser(removedInterest, username), 1);
+		UserDto existingUserDto = Mapper.map(thingService.removeInterestFromUser(removedInterest, username), 1, false);
 		request.getSession().setAttribute("loggedUser", existingUserDto);
 		return "myprofile";
 	}

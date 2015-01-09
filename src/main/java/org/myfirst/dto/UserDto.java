@@ -3,8 +3,6 @@ package org.myfirst.dto;
 import java.io.Serializable;
 import java.util.Set;
 
-import org.myfirst.domain.User;
-
 public class UserDto implements Serializable {
 	
 	/**
@@ -29,6 +27,8 @@ public class UserDto implements Serializable {
 	private Integer followingCount;
 	private Integer followersCount;
 	private String profilePhotoLink;
+	private boolean isFollowing;
+	private boolean isFollowingMe;
 	private long mediaIndex;
 	
 	public Long getId() {
@@ -145,6 +145,42 @@ public class UserDto implements Serializable {
 	}
 	public void setFirstThings(Set<MyFirstDto> firstThings) {
 		this.firstThings = firstThings;
+	}
+	public boolean isFollowing() {
+		return isFollowing;
+	}
+	public void setFollowing(boolean isFollowing) {
+		this.isFollowing = isFollowing;
+	}
+	public boolean isFollowingMe() {
+		return isFollowingMe;
+	}
+	public void setFollowingMe(boolean isFollowingMe) {
+		this.isFollowingMe = isFollowingMe;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserDto other = (UserDto) obj;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
 	}
 	
 	

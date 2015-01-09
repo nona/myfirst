@@ -35,6 +35,10 @@
 	</td>
 	<td>
 		<b>@${viewed.username}</b>
+		<c:if test="${viewed.followingMe}">
+		<br/>
+		(follows me)
+		</c:if>
 		<br/>
 		${viewed.firstName} ${viewed.lastName}
     	<br/>
@@ -61,6 +65,20 @@
 			      </c:forEach>
 			  </c:when>
 			</c:choose>
+	<c:choose>
+	<c:when test="${!viewed.following}">
+	<form action="/myfirst/addFriend" method="get" class="inline">	
+         <input type="hidden" value='${viewed.username}' name="username"/>
+         <input type="submit" value="" class="imgClass follow" title="Follow"/>
+	</form>
+	</c:when>
+	<c:otherwise>
+	<form action="/myfirst/removeFriend" method="get" class="inline">	
+         <input type="hidden" value='${viewed.username}' name="username"/>
+         <input type="submit" value="" class="imgClass unfollow" title="Unfollow"/>
+	</form>
+	</c:otherwise>
+	</c:choose>
 	</td>
 	</tr>
     </table>
