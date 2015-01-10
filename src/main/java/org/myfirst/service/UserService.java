@@ -169,4 +169,10 @@ public class UserService {
 		
 		return userRepository.save(user);
 	}
+
+	public User addComment(User commented, String loggedUser, String comment,
+			String thingId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

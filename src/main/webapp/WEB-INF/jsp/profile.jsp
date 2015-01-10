@@ -106,6 +106,24 @@
           #${tag.tag} 
       </c:forEach>
     </div> 
+    <c:if test="${not empty thing.comments}">
+    	<c:forEach items="${thing.comments}" var="c">
+    	<div class="comment">
+          ${c.username} ${c.content} ${c.date}
+        </div>
+      </c:forEach>
+    </c:if>
+    <div class="comment">
+    <form action="/myfirst/addComment" method="get" >
+	<%if(user.getProfilePhotoLink() != null && !user.getProfilePhotoLink().isEmpty()){ %>
+    <img class="small_icon" src="<%=user.getProfilePhotoLink()%>" alt="Profile picture" style="position:absolute;"/>
+    <%} else { %>
+    <img class="small_icon" src="<c:url value='/resources/images/profile.png'/>" alt="Profile picture" style="position:absolute;"/>
+    <%} %>
+    <input type="text" id="comment" name="comment" style="width: 320px;margin-left: 38px;"/>
+    <input type="submit" value="Comment"  class="submitBtn" style="width: 74px;height: 10px;padding: 0 0 15 0;"/>
+    </form>
+    </div>
 </div>
 			      </c:forEach>
 			  </c:when>

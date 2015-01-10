@@ -24,6 +24,9 @@ public class MyFirst {
 	@Fetch @RelatedTo(type = "IS_TAGGED_WITH")
 	private Set<Thing> tags;
 	
+	@Fetch @RelatedTo(type = "HAS_COMMENT")
+	private Set<Comment> comments;
+	
 	public Long getId() {
 		return id;
 	}
@@ -76,6 +79,20 @@ public class MyFirst {
         MyFirst other = (MyFirst) obj;
         return  id.equals(other.id);
             
+    }
+	public Set<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+    
+    public void addComment(Comment comment) {
+    	comments.add(comment);
+    }
+    
+    public void removeComment(Comment comment) {
+    	comments.remove(comment);
     }
 	
 }

@@ -1,15 +1,7 @@
-package org.myfirst.domain;
+package org.myfirst.dto;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+public class CommentDto {
 
-import org.springframework.data.neo4j.annotation.GraphId;
-import org.springframework.data.neo4j.annotation.NodeEntity;
-
-@NodeEntity
-public class Comment {
-
-	@GraphId
 	private Long id;
 	
 	private String username;
@@ -17,18 +9,6 @@ public class Comment {
 	private String date;
 	
 	private String content;
-	
-	
-
-	public Comment() {
-	}
-
-	public Comment(String username, String content) {
-		super();
-		this.username = username;
-		this.content = content;
-		this.date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-	}
 
 	public Long getId() {
 		return id;
@@ -61,8 +41,6 @@ public class Comment {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
-	
 	
 	
 }

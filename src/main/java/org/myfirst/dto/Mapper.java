@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.myfirst.domain.Comment;
 import org.myfirst.domain.MyFirst;
 import org.myfirst.domain.Thing;
 import org.myfirst.domain.User;
@@ -106,5 +107,22 @@ public class Mapper {
 		dto.setImage(first.getImage());
 		dto.setDate(firstRel.getDate());
 		return dto;
+	}
+	
+	public static CommentDto mapComment(Comment comment) {
+		CommentDto dto = new CommentDto();
+		dto.setId(comment.getId());
+		dto.setDate(comment.getDate());
+		dto.setContent(comment.getContent());
+		dto.setUsername(comment.getUsername());
+		return dto;
+	}
+	
+	public static Set<CommentDto> mapCommentSet(Set<Comment> comments) {
+		Set<CommentDto> dtos = new HashSet<CommentDto>();
+		for (Comment c: comments) {
+			dtos.add(mapComment(c));
+		}
+		return dtos;
 	}
 }
