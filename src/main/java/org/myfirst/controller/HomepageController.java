@@ -46,7 +46,13 @@ public class HomepageController {
 		for (User t: u) {
 			System.out.println(">>>" + t.getUsername() + " " + t.getFirstName() + " " +t.getId());
 		}
-		//userService.deleteUserById((long)3);
+		//thingService.deleteFirstThing((long)4);
+		//thingService.deleteFirstThing((long)6);
+		//thingService.deleteAllComments();
+		//userService.deleteUserById((long)1);
+//		userService.deleteUserById((long)3);
+//		userService.deleteUserById((long)9);
+//		userService.deleteUserById((long)59);
 		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
 		if (loggedUser == null) {
 			return "login";

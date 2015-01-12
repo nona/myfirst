@@ -2,6 +2,7 @@ package org.myfirst.dto;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class UserDto implements Serializable {
 	
@@ -20,7 +21,7 @@ public class UserDto implements Serializable {
 	private String dateOfBirth;
 	private Integer role;
 	private Set<ThingDto> interests;
-	private Set<MyFirstDto> firstThings;
+	private TreeSet<MyFirstDto> firstThings;
 	private Set<UserDto> following;
 	private Set<UserDto> followers;
 	private Integer firstThingsCount;
@@ -144,7 +145,7 @@ public class UserDto implements Serializable {
 		return firstThings;
 	}
 	public void setFirstThings(Set<MyFirstDto> firstThings) {
-		this.firstThings = firstThings;
+		this.firstThings = new TreeSet<MyFirstDto>(firstThings);
 	}
 	public boolean isFollowing() {
 		return isFollowing;

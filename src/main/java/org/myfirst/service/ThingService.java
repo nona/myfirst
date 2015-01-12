@@ -8,6 +8,7 @@ import java.util.Set;
 import org.myfirst.domain.MyFirst;
 import org.myfirst.domain.Thing;
 import org.myfirst.domain.User;
+import org.myfirst.repository.CommentRepository;
 import org.myfirst.repository.MyFirstRepository;
 import org.myfirst.repository.ThingRepository;
 import org.myfirst.repository.UserRepository;
@@ -27,6 +28,8 @@ public class ThingService {
 	@Autowired UserRepository userRepository;
 	
 	@Autowired MyFirstRepository myFirstRepository;
+	
+	@Autowired CommentRepository commentRepository;
 	
 	@Autowired private GraphDatabaseService graphDb;
 	
@@ -107,6 +110,19 @@ public class ThingService {
 		try {
 			System.out.println("deleting...");
 			myFirstRepository.delete(id);
+			tx.success(); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			tx.finish();
+		}
+	}
+	
+	public void deleteAllComments() {
+		Transaction tx = graphDb.beginTx();
+		try {
+			System.out.println("deleting...");
+			commentRepository.deleteAll();
 			tx.success(); 
 		} catch (Exception e) {
 			e.printStackTrace();

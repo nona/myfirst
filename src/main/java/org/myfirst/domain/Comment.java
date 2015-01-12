@@ -1,5 +1,6 @@
 package org.myfirst.domain;
 
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -14,6 +15,8 @@ public class Comment {
 	
 	private String username;
 	
+	private String commentorPhoto;
+	
 	private String date;
 	
 	private String content;
@@ -23,11 +26,13 @@ public class Comment {
 	public Comment() {
 	}
 
-	public Comment(String username, String content) {
+	public Comment(User user, String content) {
 		super();
-		this.username = username;
+		this.username = user.getUsername();
+		this.commentorPhoto = user.getProfilePhotoLink();
 		this.content = content;
-		this.date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+		System.out.println("new comment created");
 	}
 
 	public Long getId() {
@@ -38,12 +43,22 @@ public class Comment {
 		this.id = id;
 	}
 
+
+
 	public String getUsername() {
 		return username;
 	}
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getCommentorPhoto() {
+		return commentorPhoto;
+	}
+
+	public void setCommentorPhoto(String commentorPhoto) {
+		this.commentorPhoto = commentorPhoto;
 	}
 
 	public String getDate() {
@@ -60,6 +75,31 @@ public class Comment {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Comment other = (Comment) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 	
 	

@@ -25,7 +25,7 @@ public class UserFirstThingRelationship {
 		super();
 		this.user = user;
 		this.firstThing = firstThing;
-		this.date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 	}
 
 	public Long getId() {

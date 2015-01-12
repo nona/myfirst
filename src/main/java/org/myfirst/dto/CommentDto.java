@@ -1,6 +1,6 @@
 package org.myfirst.dto;
 
-public class CommentDto {
+public class CommentDto implements Comparable<CommentDto> {
 
 	private Long id;
 	
@@ -9,6 +9,8 @@ public class CommentDto {
 	private String date;
 	
 	private String content;
+	
+	private String commentorProfilePic;
 
 	public Long getId() {
 		return id;
@@ -40,6 +42,22 @@ public class CommentDto {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getCommentorProfilePic() {
+		return commentorProfilePic;
+	}
+
+	public void setCommentorProfilePic(String commentorProfilePic) {
+		this.commentorProfilePic = commentorProfilePic;
+	}
+
+	@Override
+	public int compareTo(CommentDto o) {
+		if (this.id.compareTo(o.id) != 0) {
+			return this.date.compareTo(o.date);
+		}
+		return 0;
 	}
 	
 	

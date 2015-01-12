@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.myfirst.domain.Comment;
+import org.myfirst.domain.MyFirst;
 import org.myfirst.domain.User;
+import org.myfirst.repository.CommentRepository;
+import org.myfirst.repository.MyFirstRepository;
 import org.myfirst.repository.RoleRepository;
 import org.myfirst.repository.UserRepository;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -18,6 +22,12 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private CommentRepository commentRepository;
+	
+	@Autowired
+	private MyFirstRepository myFirstRepository;
 	
 	@Autowired
 	private RoleRepository roleRepository;
@@ -170,9 +180,17 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public User addComment(User commented, String loggedUser, String comment,
+	public User addComment(String loggedUser, String comment,
 			String thingId) {
-		// TODO Auto-generated method stub
+		User user = this.findUserByUsername(loggedUser);
+		System.out.println(">>> user:" + user + " " + user.getUsername());
+		Comment c = new Comment(user, comment);
+		commentRepository.save(c);
+		MyFirst first = myFirstRepository.findOne(new Long(thingId));
+		System.out.println(">>> first: " + first.getTitle());
+		first.addComment(c);
+		myFirstRepository.save(first);
+		System.out.println("first saved!");
 		return null;
 	}
 }

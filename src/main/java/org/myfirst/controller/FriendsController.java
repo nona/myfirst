@@ -69,15 +69,15 @@ public class FriendsController {
     }
     
     @RequestMapping(value = "/addComment", method = RequestMethod.GET, headers = "Accept=text/html")
-    public String addComment(Model model, @RequestParam("thingId") String thingId, 
+    public String addCommentFromProfileView(Model model, @RequestParam("thingId") String thingId, 
     		@RequestParam("username") String username, @RequestParam("comment") String comment, 
     		HttpServletRequest request) {
 		String loggedUser = ((UserDto)request.getSession().getAttribute("loggedUser")).getUsername();
 		
-		User commented = userService.findUserByUsername(username);
-		
-		UserDto existingUserDto = Mapper.map(userService.addComment(commented, loggedUser, comment, thingId), 1, false);
-		request.getSession().setAttribute("loggedUser", existingUserDto);
-        return "";
+		//User commented = userService.findUserByUsername(username);
+		userService.addComment(loggedUser, comment, thingId);
+		//UserDto existingUserDto = Mapper.map(userService.addComment(loggedUser, comment, thingId), 1, false);
+		//request.getSession().setAttribute("loggedUser", existingUserDto);
+        return "redirect:/profile/" + username;
     }
 }

@@ -26,7 +26,7 @@ public class FollowRelationship {
 	public FollowRelationship(User follower, User followed) {
 		this.follower = follower;
 		this.followed = followed;
-		this.sinceDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		this.sinceDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 	}
 
 	public String getSinceDate() {

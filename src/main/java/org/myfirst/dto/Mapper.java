@@ -11,8 +11,14 @@ import org.myfirst.domain.Thing;
 import org.myfirst.domain.User;
 import org.myfirst.domain.UserFirstThingRelationship;
 import org.myfirst.dto.UserDto;
+import org.myfirst.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Mapper {
+	
+	@Autowired static UserService userService;
 
 	public static UserDto map(User user, int depth, boolean followed) {
 			UserDto dto = new UserDto();
@@ -106,6 +112,7 @@ public class Mapper {
 		dto.setTitle(first.getTitle());
 		dto.setImage(first.getImage());
 		dto.setDate(firstRel.getDate());
+		dto.setComments(mapCommentSet(first.getComments()));
 		return dto;
 	}
 	
@@ -115,6 +122,7 @@ public class Mapper {
 		dto.setDate(comment.getDate());
 		dto.setContent(comment.getContent());
 		dto.setUsername(comment.getUsername());
+		dto.setCommentorProfilePic(comment.getCommentorPhoto());
 		return dto;
 	}
 	

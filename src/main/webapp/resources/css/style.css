@@ -633,3 +633,6 @@ div.comment {
 	opacity: 0.8;
 	filter: alpha(opacity=80); /* For IE8 and earlier */
 }
+.postImage {
+	width: 440px;
+}

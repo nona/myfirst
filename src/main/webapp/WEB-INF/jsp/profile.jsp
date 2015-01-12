@@ -96,7 +96,7 @@
 	<hr class="line"/>
 	<c:choose> 
 	  <c:when test="${!empty thing.image}">
-	   <img class="profile_picture" src="${thing.image}" alt="image"/>
+	   <img class="profile_picture" src="${thing.image}" alt="image" class="postImage"/>
 	  </c:when>
 	</c:choose>
 	<p>
@@ -106,15 +106,17 @@
           #${tag.tag} 
       </c:forEach>
     </div> 
+    <div class="comment">
     <c:if test="${not empty thing.comments}">
     	<c:forEach items="${thing.comments}" var="c">
-    	<div class="comment">
-          ${c.username} ${c.content} ${c.date}
-        </div>
+    	<img src="${c.commentorProfilePic}"  class="small_icon"/>
+          <b>${c.username}</b> (${c.date})  ${c.content} 
+          <br/>
       </c:forEach>
     </c:if>
-    <div class="comment">
     <form action="/myfirst/addComment" method="get" >
+    <input type="hidden" value='${viewed.username}' name="username"/>
+    <input type="hidden" value='${thing.id}' name="thingId"/>
 	<%if(user.getProfilePhotoLink() != null && !user.getProfilePhotoLink().isEmpty()){ %>
     <img class="small_icon" src="<%=user.getProfilePhotoLink()%>" alt="Profile picture" style="position:absolute;"/>
     <%} else { %>
