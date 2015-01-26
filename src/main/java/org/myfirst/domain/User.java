@@ -39,27 +39,18 @@ public class User {
 	
 	@Fetch @RelatedTo(type = "FOLLOWS", direction = Direction.INCOMING)
 	private Set<User> followers;
-//	
-//	@Fetch @RelatedTo(type = "FOLLOWS", direction = Direction.BOTH)
-//	private Set<User> friends;
 	
 	@Fetch @RelatedTo(type = "HAS_ROLE")
 	private Role role;
 	
 	@Fetch @RelatedTo(type = "HAS_DONE")
-	private Set<MyFirst> firstThings;
+	private Set<FirstThing> firstThings;
 	
 	@Fetch @RelatedToVia(type = "HAS_DONE")
 	private Set<UserFirstThingRelationship> didForFirstTime;
 	
 	@Fetch @RelatedTo(type = "IS_INTERESTED_IN")
 	private Set<Thing> interests;
-	
-	@Fetch @RelatedToVia(type = "MEMBER_OF")
-	private Set<InterestedRelationship> interestedTo;
-	
-//	@Fetch @RelatedToVia(type = "FOLLOWS")
-//	private Set<FollowRelationship> followsRelationship;
 	
 	private String profilePhotoLink;
 	
@@ -218,11 +209,11 @@ public class User {
 //		this.friends = friends;
 //	}
 
-	public Set<MyFirst> getFirstThings() {
+	public Set<FirstThing> getFirstThings() {
 		return firstThings;
 	}
 
-	public void setFirstThings(Set<MyFirst> firstThings) {
+	public void setFirstThings(Set<FirstThing> firstThings) {
 		this.firstThings = firstThings;
 	}
 
@@ -234,29 +225,26 @@ public class User {
 		this.interests = interests;
 	}
 
-	public Iterable<InterestedRelationship> getInterestedTo() {
-		return interestedTo;
-	}
-
-	public void setInterestedTo(Set<InterestedRelationship> interestedTo) {
-		this.interestedTo = interestedTo;
-	}
     
-    public InterestedRelationship interestedIn(Thing thing) {
-    	InterestedRelationship interested = new InterestedRelationship(this, thing);
-    	interestedTo.add(interested);
-    	return interested;
+    public void interestedIn(Thing thing) {
+    	interests.add(thing);
     }
     
-    public UserFirstThingRelationship didForFirstTime(MyFirst firstThing) {
+    public UserFirstThingRelationship didForFirstTime(FirstThing firstThing) {
     	System.out.println(">>> didForFirstTime " + firstThing.getTitle());
     	UserFirstThingRelationship first = new UserFirstThingRelationship(this, firstThing);
     	didForFirstTime.add(first);
+    	for (UserFirstThingRelationship r: didForFirstTime) {
+    		System.out.println(">>>> " + r.getFirstThing().getTitle());
+    	}
     	return first;
     }
 
     public void notInterestedIn(Thing thing) {
     	interests.remove(thing);
+    	for (Thing t: interests) {
+    		System.out.println(">>."+t.getTag());
+    	}
     }
 
     public void follow(User user) {
@@ -303,7 +291,7 @@ public class User {
 //		this.followsRelationship = followsRelationship;
 //	}
 	
-    public void removeFirstThing(MyFirst first) {
+    public void removeFirstThing(FirstThing first) {
     	firstThings.remove(first);
     	for (UserFirstThingRelationship rel: didForFirstTime) {
     		if (rel.getFirstThing().getId().equals(first.getId())) {

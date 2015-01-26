@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class MyFirstDto implements Serializable, Comparable<MyFirstDto> {
+public class FirstThingDto implements Serializable, Comparable<FirstThingDto> {
 
 	private static final long serialVersionUID = 7704749462929251097L;
 
@@ -89,7 +89,7 @@ public class MyFirstDto implements Serializable, Comparable<MyFirstDto> {
 	}
 
 	@Override
-	public int compareTo(MyFirstDto o) {
+	public int compareTo(FirstThingDto o) {
 		if (this.id.compareTo(o.id) != 0) {
 			return o.date.compareTo(this.date);
 		}
@@ -112,7 +112,7 @@ public class MyFirstDto implements Serializable, Comparable<MyFirstDto> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MyFirstDto other = (MyFirstDto) obj;
+		FirstThingDto other = (FirstThingDto) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

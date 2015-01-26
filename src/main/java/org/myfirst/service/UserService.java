@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.myfirst.domain.Comment;
-import org.myfirst.domain.MyFirst;
+import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.User;
 import org.myfirst.repository.CommentRepository;
-import org.myfirst.repository.MyFirstRepository;
+import org.myfirst.repository.FirstThingRepository;
 import org.myfirst.repository.RoleRepository;
 import org.myfirst.repository.UserRepository;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -27,7 +27,7 @@ public class UserService {
 	private CommentRepository commentRepository;
 	
 	@Autowired
-	private MyFirstRepository myFirstRepository;
+	private FirstThingRepository firstThingRepository;
 	
 	@Autowired
 	private RoleRepository roleRepository;
@@ -180,17 +180,17 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public User addComment(String loggedUser, String comment,
+	public void addComment(String loggedUser, String comment,
 			String thingId) {
 		User user = this.findUserByUsername(loggedUser);
 		System.out.println(">>> user:" + user + " " + user.getUsername());
-		Comment c = new Comment(user, comment);
-		commentRepository.save(c);
-		MyFirst first = myFirstRepository.findOne(new Long(thingId));
+		FirstThing first = firstThingRepository.findOne(new Long(thingId));
 		System.out.println(">>> first: " + first.getTitle());
+		Comment c = new Comment(comment);
+		c.addCommentor(user);
+		commentRepository.save(c);
 		first.addComment(c);
-		myFirstRepository.save(first);
+		firstThingRepository.save(first);
 		System.out.println("first saved!");
-		return null;
 	}
 }

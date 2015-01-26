@@ -56,23 +56,32 @@
 		<b>Interests:</b>
 	<%if (user.getInterests() != null && !user.getInterests().isEmpty()) { %>
 		<br/>
-		       <%for (ThingDto t: user.getInterests()) { %>
-                	<%="#" + t.getTag() %><a href="#" onclick="removeInterest('<%=t.getTag()%>');">
-                <%} %>
-	<%} else {%>
+		       <%
+		       	for (ThingDto t: user.getInterests()) {
+		       %>
+                	<%="#" + t.getTag()%><a href="#" onclick="removeInterest('<%=t.getTag()%>');">
+                <%
+                	}
+                %>
+	<%
+		} else {
+	%>
 		You haven't added any interests yet.
-	<%} %>
+	<%
+		}
+	%>
 	</td>
 	</tr>
     </table>
     </div>
 <%
-for (MyFirstDto first: user.getFirstThings()) { %>
+	for (FirstThingDto first: user.getFirstThings()) {
+%>
 <div id="wrapper">
 	<div class="box form">
 	<div class="title">
 		<span class="label"><%=first.getTitle()%></span>
-		<span class="date"><%=first.getDate() %>
+		<span class="date"><%=first.getDate()%>
 		<form action="/myfirst/deleteFirstThing"  method="get" class="inline">
 			<input type="hidden" value="<%=first.getId()%>" id="firstThingId" name="firstThingId"/>
 			<input type="submit" value="" class="imgClassSmall eraser" alt="Delete" title="Delete the first thing"/>
@@ -80,14 +89,20 @@ for (MyFirstDto first: user.getFirstThings()) { %>
 		</span>
 	</div>
 	<hr class="line"/>
-	<%if (first.getImage() != null && !first.getImage().isEmpty()) { %>
+	<%
+		if (first.getImage() != null && !first.getImage().isEmpty()) {
+	%>
 	<img alt="image" src="<%=first.getImage()%>"  class="postImage">
-	<%} %>
+	<%
+		}
+	%>
 	<p>
 	<%=first.getDescription()%>
 	</p>
 	<%=first.getVisibility()%>
-	<%for(ThingDto t: first.getTags()) {%>
+	<%
+		for(ThingDto t: first.getTags()) {
+	%>
 		#<%=t.getTag()%>
 	<%} %>
     </div> 

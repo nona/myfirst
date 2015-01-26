@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.myfirst.domain.MyFirst;
+import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.Thing;
 import org.myfirst.domain.User;
 import org.myfirst.dto.Mapper;
@@ -37,17 +37,22 @@ public class HomepageController {
 	@RequestMapping("/home")
 	public String getHomePage(HttpServletRequest request) {
 
-		EndResult<MyFirst> m = thingService.findAllFirstThings();
-		for (MyFirst t: m) {
+		EndResult<FirstThing> m = thingService.findAllFirstThings();
+		for (FirstThing t: m) {
 			System.out.println(">>>" + t.getTitle() + " " + t.getDescription() + " " +t.getId());
 		}
 		
 		List<User> u = userService.readAll();
 		for (User t: u) {
-			System.out.println(">>>" + t.getUsername() + " " + t.getFirstName() + " " +t.getId());
+			System.out.println(">>>" + t.getUsername() + " " + t.getFirstName() + " " +t.getId() + " " + t.getEmail());
+			for (Thing ti: t.getInterests()) {
+				System.out.println(">>>>>>>>" + ti.getTag());
+			}
 		}
-		//thingService.deleteFirstThing((long)4);
-		//thingService.deleteFirstThing((long)6);
+//		thingService.deleteFirstThing((long)15);
+//		thingService.deleteFirstThing((long)16);
+//		thingService.deleteFirstThing((long)18);
+//		thingService.deleteFirstThing((long)27);
 		//thingService.deleteAllComments();
 		//userService.deleteUserById((long)1);
 //		userService.deleteUserById((long)3);
@@ -135,7 +140,7 @@ public class HomepageController {
 			
 		}
 		
-		MyFirst first = new MyFirst();
+		FirstThing first = new FirstThing();
 		first.setDescription(description);
 		first.setVisibility(visibility);
 		first.setTitle(title);
@@ -154,7 +159,7 @@ public class HomepageController {
 
 		String username = ((UserDto)request.getSession().getAttribute("loggedUser")).getUsername();
 		
-		MyFirst first = thingService.findMyFirstThingById(new Long(firstThingId));
+		FirstThing first = thingService.findMyFirstThingById(new Long(firstThingId));
 		String link = first.getImage();
 		
 		if (first != null && link != null) {

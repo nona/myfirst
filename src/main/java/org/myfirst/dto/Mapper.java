@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.myfirst.domain.Comment;
-import org.myfirst.domain.MyFirst;
+import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.Thing;
 import org.myfirst.domain.User;
 import org.myfirst.domain.UserFirstThingRelationship;
@@ -94,17 +94,17 @@ public class Mapper {
 		return dtos;
 	}
 	
-	public static Set<MyFirstDto> mapFirstThings(Set<UserFirstThingRelationship> set) {
-		Set<MyFirstDto> dtos = new HashSet<MyFirstDto>();
+	public static Set<FirstThingDto> mapFirstThings(Set<UserFirstThingRelationship> set) {
+		Set<FirstThingDto> dtos = new HashSet<FirstThingDto>();
 		for (UserFirstThingRelationship first: set) {
 			dtos.add(mapMyFirst(first));
 		}
 		return dtos;
 	}
 	
-	public static MyFirstDto mapMyFirst(UserFirstThingRelationship firstRel) {
-		MyFirstDto dto = new MyFirstDto();
-		MyFirst first = firstRel.getFirstThing();
+	public static FirstThingDto mapMyFirst(UserFirstThingRelationship firstRel) {
+		FirstThingDto dto = new FirstThingDto();
+		FirstThing first = firstRel.getFirstThing();
 		dto.setId(first.getId());
 		dto.setDescription(first.getDescription());
 		dto.setVisibility(first.getVisibility());
@@ -121,8 +121,8 @@ public class Mapper {
 		dto.setId(comment.getId());
 		dto.setDate(comment.getDate());
 		dto.setContent(comment.getContent());
-		dto.setUsername(comment.getUsername());
-		dto.setCommentorProfilePic(comment.getCommentorPhoto());
+		dto.setUsername(comment.getSingleCommentor().getUsername());
+		dto.setCommentorProfilePic(comment.getSingleCommentor().getProfilePhotoLink());
 		return dto;
 	}
 	

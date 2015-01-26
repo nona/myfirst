@@ -26,6 +26,6 @@
 	<!-- Activate Spring Data Neo4j repository support -->
 	<neo4j:repositories base-package="org.myfirst"/>
 
-  	<neo4j:config storeDirectory="target/test.db"/>
+  	<neo4j:config storeDirectory="target/newDB.db"/>
   	
 </beans>

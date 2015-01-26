@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.myfirst.domain.MyFirst;
+import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.Thing;
 import org.myfirst.domain.User;
 import org.myfirst.repository.CommentRepository;
-import org.myfirst.repository.MyFirstRepository;
+import org.myfirst.repository.FirstThingRepository;
 import org.myfirst.repository.ThingRepository;
 import org.myfirst.repository.UserRepository;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -27,7 +27,7 @@ public class ThingService {
 	
 	@Autowired UserRepository userRepository;
 	
-	@Autowired MyFirstRepository myFirstRepository;
+	@Autowired FirstThingRepository firstThingRepository;
 	
 	@Autowired CommentRepository commentRepository;
 	
@@ -95,9 +95,9 @@ public class ThingService {
 		
 		return userRepository.save(user);
 	}
-	public User addNewFirstThingByUser(MyFirst first, String username, boolean isImageAdded) {
+	public User addNewFirstThingByUser(FirstThing first, String username, boolean isImageAdded) {
 		User user = userRepository.findByUsername(username);
-		myFirstRepository.save(first);
+		firstThingRepository.save(first);
 	    user.didForFirstTime(first);
 	    if(isImageAdded) {
 	    	user.incrementMediaIndex();
@@ -109,7 +109,7 @@ public class ThingService {
 		Transaction tx = graphDb.beginTx();
 		try {
 			System.out.println("deleting...");
-			myFirstRepository.delete(id);
+			firstThingRepository.delete(id);
 			tx.success(); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -131,11 +131,11 @@ public class ThingService {
 		}
 	}
 	
-	public MyFirst findMyFirstThingById(Long id) {
-		return myFirstRepository.findOne(id);
+	public FirstThing findMyFirstThingById(Long id) {
+		return firstThingRepository.findOne(id);
 	}
 	
-	public User removeFirstThingFromUser(MyFirst firstThing, String username) {
+	public User removeFirstThingFromUser(FirstThing firstThing, String username) {
 		User user = userRepository.findByUsername(username);
 		System.out.println("name=== " + user.getFirstName());
 		Long id = firstThing.getId();
@@ -147,8 +147,8 @@ public class ThingService {
 		return result;
 	}
 	
-	public EndResult<MyFirst> findAllFirstThings() {
-		return myFirstRepository.findAll();
+	public EndResult<FirstThing> findAllFirstThings() {
+		return firstThingRepository.findAll();
 	}
 
 }

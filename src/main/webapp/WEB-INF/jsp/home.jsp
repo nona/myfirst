@@ -18,8 +18,9 @@
 </head>
 
 <body>
-<%UserDto user = (UserDto)session.getAttribute("loggedUser"); 
-for (MyFirstDto first: user.getFirstThings()) {
+<%
+	UserDto user = (UserDto)session.getAttribute("loggedUser"); 
+for (FirstThingDto first: user.getFirstThings()) {
 	System.out.println(first.getDescription() + " " + first.getVisibility());
 }
 %>

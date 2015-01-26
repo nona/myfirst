@@ -2,13 +2,15 @@ package org.myfirst.domain;
 
 import java.util.Set;
 
+import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
+import org.springframework.data.neo4j.annotation.RelatedToVia;
 
 @NodeEntity
-public class MyFirst {
+public class FirstThing {
 
 	@GraphId
 	private Long id;
@@ -76,7 +78,7 @@ public class MyFirst {
         } else if (obj == null || getClass() != obj.getClass()) { 
             return false;
         }
-        MyFirst other = (MyFirst) obj;
+        FirstThing other = (FirstThing) obj;
         return  id.equals(other.id);
             
     }
@@ -89,6 +91,9 @@ public class MyFirst {
     
     public void addComment(Comment comment) {
     	comments.add(comment);
+    	for (Comment c: comments) {
+    		System.out.println(">> " + c.getContent());
+    	}
     }
     
     public void removeComment(Comment comment) {

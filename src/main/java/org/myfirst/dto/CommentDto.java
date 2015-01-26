@@ -1,6 +1,13 @@
 package org.myfirst.dto;
 
-public class CommentDto implements Comparable<CommentDto> {
+import java.io.Serializable;
+
+public class CommentDto implements Serializable, Comparable<CommentDto> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 	

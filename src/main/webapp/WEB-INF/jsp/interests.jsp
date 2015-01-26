@@ -21,7 +21,8 @@
 </head>
 
 <body>
-<%UserDto user = (UserDto)session.getAttribute("loggedUser"); 
+<%
+	UserDto user = (UserDto)session.getAttribute("loggedUser");
 %>
 <jsp:include page="header.jsp">
     <jsp:param name="username" value="<%=user.getUsername()%>"/>
@@ -68,7 +69,9 @@
                     <input type="submit" value="Add"/> 
                 </p>
                 <p>
-                <%for (ThingDto t: user.getInterests()) { %>
+                <%
+                	for (ThingDto t: user.getInterests()) {
+                %>
                 	<%="#" + t.getTag() %><a href="#" onclick="removeInterest('<%=t.getTag()%>');">
                 	<img class="removeIcon" id="remove<%=t.getTag()%>" src="<c:url value='/resources/images/delete.png'/>" alt="Delete"/></a>
                 <%} %>

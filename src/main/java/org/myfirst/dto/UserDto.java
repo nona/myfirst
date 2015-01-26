@@ -21,7 +21,7 @@ public class UserDto implements Serializable {
 	private String dateOfBirth;
 	private Integer role;
 	private Set<ThingDto> interests;
-	private TreeSet<MyFirstDto> firstThings;
+	private TreeSet<FirstThingDto> firstThings;
 	private Set<UserDto> following;
 	private Set<UserDto> followers;
 	private Integer firstThingsCount;
@@ -141,11 +141,11 @@ public class UserDto implements Serializable {
 	public void setMediaIndex(long mediaIndex) {
 		this.mediaIndex = mediaIndex;
 	}
-	public Set<MyFirstDto> getFirstThings() {
+	public Set<FirstThingDto> getFirstThings() {
 		return firstThings;
 	}
-	public void setFirstThings(Set<MyFirstDto> firstThings) {
-		this.firstThings = new TreeSet<MyFirstDto>(firstThings);
+	public void setFirstThings(Set<FirstThingDto> firstThings) {
+		this.firstThings = new TreeSet<FirstThingDto>(firstThings);
 	}
 	public boolean isFollowing() {
 		return isFollowing;

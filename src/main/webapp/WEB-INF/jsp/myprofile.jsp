@@ -46,7 +46,8 @@
 </head>
 
 <body>
-<%UserDto user = (UserDto)session.getAttribute("loggedUser"); 
+<%
+	UserDto user = (UserDto)session.getAttribute("loggedUser");
 %>
 
 <jsp:include page="header.jsp">
@@ -106,12 +107,16 @@
                 	<label for="newCountry" >Your country</label>
                     <select id="newCountry">
                     <option value="">-</option>
-                    <% ArrayList<String> countries = Constants.getCountries();
-                    for (String country: countries) { %>
-                      <option value="<%=country%>" <%if(country.equals(user.getCountry())) {%>selected="selected"<%} %>>
+                    <%
+                    	ArrayList<String> countries = Constants.getCountries();
+                                                            for (String country: countries) {
+                    %>
+                      <option value="<%=country%>" <%if(country.equals(user.getCountry())) {%>selected="selected"<%}%>>
                       	<%=country%>
                       </option>
-                    <%} %>
+                    <%
+                    	}
+                    %>
                     </select>
                 </p>
                 <p>
@@ -129,11 +134,17 @@
             </form>
         </div> 
         <div class="box form" id="photo"  style="display:none;">
-	        <%if(user.getProfilePhotoLink() != null && !user.getProfilePhotoLink().isEmpty()){ %>
+	        <%
+	        	if(user.getProfilePhotoLink() != null && !user.getProfilePhotoLink().isEmpty()){
+	        %>
 	        <img class="profile_picture" src="<%=user.getProfilePhotoLink()%>" alt="Profile picture"/>
-	        <%} else { %>
+	        <%
+	        	} else {
+	        %>
 	        <img class="profile_picture" src="<c:url value='/resources/images/profile.png'/>" alt="Profile picture"/>
-	        <%} %>
+	        <%
+	        	}
+	        %>
 		    <form action="/myfirst/myprofile/photo" method="post" enctype="multipart/form-data">
 			        <input  type="file" name="file"/>
 			        <p class="save button"> 
@@ -171,7 +182,9 @@
                     <input type="submit" value="Add"  class="submitBtn"/> 
                 </p>
                 <p>
-                <%for (ThingDto t: user.getInterests()) { %>
+                <%
+                	for (ThingDto t: user.getInterests()) {
+                %>
                 	<%="#" + t.getTag() %><a href="#" onclick="removeInterest('<%=t.getTag()%>');">
                 	<img class="removeIcon" id="remove<%=t.getTag()%>" src="<c:url value='/resources/images/delete.png'/>" alt="Delete"/></a>
                 <%} %>
