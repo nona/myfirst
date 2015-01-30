@@ -1,6 +1,7 @@
 package org.myfirst.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.Thing;
 import org.myfirst.domain.User;
+import org.myfirst.domain.UserResult;
 import org.myfirst.dto.Mapper;
 import org.myfirst.dto.UserDto;
 import org.myfirst.service.FTPFunctions;
@@ -16,7 +18,7 @@ import org.myfirst.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.neo4j.conversion.EndResult;
+import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +39,7 @@ public class HomepageController {
 	@RequestMapping("/home")
 	public String getHomePage(HttpServletRequest request) {
 
-		EndResult<FirstThing> m = thingService.findAllFirstThings();
+		Result<FirstThing> m = thingService.findAllFirstThings();
 		for (FirstThing t: m) {
 			System.out.println(">>>" + t.getTitle() + " " + t.getDescription() + " " +t.getId());
 		}
@@ -61,6 +63,12 @@ public class HomepageController {
 		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
 		if (loggedUser == null) {
 			return "login";
+		}
+		List<Map<String, Object>> recommendationsList = userService.getFriendsRecommendation(loggedUser.getUsername());
+		for (Map<String, Object> recommendations: recommendationsList) {
+			for (String rec: recommendations.keySet()) {
+				System.out.println(">>>>>>>>>>>>>RECOMENDS: " + rec + " " + recommendations.get(rec));
+			}
 		}
 		return "home";
 	}

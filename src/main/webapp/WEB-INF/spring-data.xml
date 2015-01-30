@@ -24,8 +24,8 @@
 	<context:property-placeholder properties-ref="deployProperties" />
 
 	<!-- Activate Spring Data Neo4j repository support -->
-	<neo4j:repositories base-package="org.myfirst"/>
+	<neo4j:repositories base-package="org.myfirst.repository"/>
 
-  	<neo4j:config storeDirectory="target/newDB.db"/>
+  	<neo4j:config storeDirectory="target/myFirstDB.db" base-package="org.myfirst.domain"/>
   	
 </beans>

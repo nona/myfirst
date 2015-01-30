@@ -1,12 +1,15 @@
 package org.myfirst.domain;
 
 import org.springframework.data.neo4j.annotation.EndNode;
+import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.RelationshipEntity;
 import org.springframework.data.neo4j.annotation.StartNode;
 
 @RelationshipEntity(type = "HAS_ROLE")
 public class UserRoleRelationship {
 
+	@GraphId private Long id;
+	
 	private String description;
 	
 	@StartNode private User user;
@@ -35,6 +38,14 @@ public class UserRoleRelationship {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }

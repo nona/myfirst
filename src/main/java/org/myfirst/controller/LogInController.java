@@ -6,6 +6,7 @@ import org.myfirst.domain.Role;
 import org.myfirst.domain.User;
 import org.myfirst.dto.Mapper;
 import org.myfirst.dto.UserDto;
+import org.myfirst.service.DBPopulatorService;
 import org.myfirst.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,10 +25,14 @@ public class LogInController {
 	@Autowired
 	private UserService service;
 	
+	@Autowired
+	private DBPopulatorService dbService;
+	
 	private UserDto loggedUser;
 	
 	@RequestMapping
 	public String getLoginPage() {
+		populateDB(false);
 		return "login";
 	}
 	
@@ -72,5 +77,12 @@ public class LogInController {
 		UserDto newUserDto = Mapper.map(service.register(newUser), 1, false);
 		request.getSession().setAttribute("loggedUser", newUserDto);
 		return "home";
+	}
+	
+	private void populateDB(boolean populateDB) {
+		if (populateDB) {
+			dbService.cleanDb();
+			dbService.populateDatabase();
+		}
 	}
 }

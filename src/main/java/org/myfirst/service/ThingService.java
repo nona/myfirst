@@ -17,10 +17,12 @@ import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.neo4j.conversion.EndResult;
+import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ThingService {
 	
 	@Autowired ThingRepository thingRepository;
@@ -36,7 +38,7 @@ public class ThingService {
 	public List<Thing> findAllThings() {
 		List<Thing> Things = new ArrayList<Thing>();
 		
-		EndResult<Thing> results = thingRepository.findAll();
+		Result<Thing> results = thingRepository.findAll();
 		for (Thing r: results) {
 			Things.add(r);
 		}
@@ -106,29 +108,21 @@ public class ThingService {
 	}
 	
 	public void deleteFirstThing(Long id) {
-		Transaction tx = graphDb.beginTx();
-		try {
+		
+		try (Transaction tx = graphDb.beginTx()) {
 			System.out.println("deleting...");
 			firstThingRepository.delete(id);
 			tx.success(); 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			tx.finish();
-		}
+		} 
 	}
 	
 	public void deleteAllComments() {
-		Transaction tx = graphDb.beginTx();
-		try {
+		
+		try (Transaction tx = graphDb.beginTx()) {
 			System.out.println("deleting...");
 			commentRepository.deleteAll();
 			tx.success(); 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			tx.finish();
-		}
+		} 
 	}
 	
 	public FirstThing findMyFirstThingById(Long id) {
@@ -147,7 +141,7 @@ public class ThingService {
 		return result;
 	}
 	
-	public EndResult<FirstThing> findAllFirstThings() {
+	public Result<FirstThing> findAllFirstThings() {
 		return firstThingRepository.findAll();
 	}
 

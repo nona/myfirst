@@ -3,10 +3,12 @@ package org.myfirst.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.myfirst.domain.Comment;
 import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.User;
+import org.myfirst.domain.UserResult;
 import org.myfirst.repository.CommentRepository;
 import org.myfirst.repository.FirstThingRepository;
 import org.myfirst.repository.RoleRepository;
@@ -14,10 +16,12 @@ import org.myfirst.repository.UserRepository;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.conversion.EndResult;
+import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class UserService {
 
 	@Autowired
@@ -71,7 +75,7 @@ public class UserService {
 	public List<User> readAll() {
 		List<User> users = new ArrayList<User>();
 		
-		EndResult<User> results = userRepository.findAll();
+		Result<User> results = userRepository.findAll();
 		for (User r: results) {
 			users.add(r);
 		}
@@ -81,7 +85,7 @@ public class UserService {
 	
 	public HashSet<User> searchFor(String input) {
 		HashSet<User> result = new HashSet<User>();
-		EndResult<User> found;
+		Result<User> found;
 		found = userRepository.findAllByPropertyValue("username", input);
 		for (User u: found) {
 			result.add(u);
@@ -152,16 +156,17 @@ public class UserService {
 	}
 	
 	public void deleteUserById(Long id) {
-		Transaction tx = graphDb.beginTx();
-		try {
+
+		try (Transaction tx = graphDb.beginTx()) {
 			System.out.println("deleting...");
 			userRepository.delete(id);
 			tx.success(); 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			tx.finish();
-		}
+		} 
+	}
+	
+	public User follow(User followed, User user) {
+		
+		return follow(followed, user.getUsername());
 	}
 	
 	public User follow(User followed, String username) {
@@ -192,5 +197,10 @@ public class UserService {
 		first.addComment(c);
 		firstThingRepository.save(first);
 		System.out.println("first saved!");
+	}
+	
+	public List<Map<String, Object>> getFriendsRecommendation(String username) {
+		User user = findUserByUsername(username);
+		return userRepository.getFriendsRecommendation(user);
 	}
 }
