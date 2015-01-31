@@ -27,6 +27,26 @@
 	       		<img class="small_icon" src="<c:url value='/resources/images/search.png'/>" alt="Search"/>
 					Who to follow
 	    </p>
+	    	     <c:choose>
+		  <c:when test="${not empty whoToFollow}">
+		      <c:forEach items="${whoToFollow}" var="user">
+		        <c:choose> 
+				  <c:when test="${!empty user.profilePhotoLink}">
+				   <img class="small_icon" src="${user.profilePhotoLink}" alt="Profile picture"/>
+				  </c:when>
+				  <c:otherwise>
+				    <img class="small_icon" src="<c:url value='/resources/images/profile.png'/>" alt="Profile picture"/>
+				  </c:otherwise>
+				</c:choose>
+					<form action="/myfirst/profile/${user.username}" id='viewProfile${user.username}' method="get" class="inline">	
+			          <a href="#" onclick="document.getElementById('viewProfile${user.username}').submit();"> @${user.username}</a><br/>
+					</form>
+		      </c:forEach>
+		  </c:when>
+		  <c:otherwise>
+		    No suggestions yet.
+		  </c:otherwise>
+		</c:choose>
     </div>
  		<c:choose>
 		  <c:when test="${not empty users}">

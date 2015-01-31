@@ -1,6 +1,7 @@
 package org.myfirst.controller;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,8 @@ public class FriendsController {
     @RequestMapping(value = "/following", method = RequestMethod.GET, headers = "Accept=text/html")
     public String findFollowing(Model model, HttpServletRequest request) {
     	UserDto user = (UserDto)request.getSession().getAttribute("loggedUser");
+    	List<UserDto> whoToFollow = Mapper.map(userService.getFriendsRecommendation(user.getUsername()));
+    	model.addAttribute("whoToFollow", whoToFollow);
     	Set<UserDto> following = user.getFollowing();
         if (following != null && !following.isEmpty()) {
             model.addAttribute("users", following);
@@ -37,6 +40,8 @@ public class FriendsController {
     @RequestMapping(value = "/followers", method = RequestMethod.GET, headers = "Accept=text/html")
     public String findFollowers(Model model, HttpServletRequest request) {
     	UserDto user = (UserDto)request.getSession().getAttribute("loggedUser");
+    	List<UserDto> whoToFollow = Mapper.map(userService.getFriendsRecommendation(user.getUsername()));
+    	model.addAttribute("whoToFollow", whoToFollow);
     	Set<UserDto> followers = user.getFollowers();
         if (followers != null && !followers.isEmpty()) {
             model.addAttribute("users", followers);

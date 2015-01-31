@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.Thing;
 import org.myfirst.domain.User;
-import org.myfirst.domain.UserResult;
 import org.myfirst.dto.Mapper;
 import org.myfirst.dto.UserDto;
 import org.myfirst.service.FTPFunctions;
@@ -64,12 +63,12 @@ public class HomepageController {
 		if (loggedUser == null) {
 			return "login";
 		}
-		List<Map<String, Object>> recommendationsList = userService.getFriendsRecommendation(loggedUser.getUsername());
-		for (Map<String, Object> recommendations: recommendationsList) {
-			for (String rec: recommendations.keySet()) {
-				System.out.println(">>>>>>>>>>>>>RECOMENDS: " + rec + " " + recommendations.get(rec));
-			}
-		}
+//		List<Map<String, Object>> recommendationsList = userService.getFriendsRecommendation(loggedUser.getUsername());
+//		for (Map<String, Object> recommendations: recommendationsList) {
+//			for (String rec: recommendations.keySet()) {
+//				System.out.println(">>>>>>>>>>>>>RECOMENDS: " + rec + " " + recommendations.get(rec));
+//			}
+//		}
 		return "home";
 	}
 	

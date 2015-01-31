@@ -8,7 +8,6 @@ import java.util.Map;
 import org.myfirst.domain.Comment;
 import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.User;
-import org.myfirst.domain.UserResult;
 import org.myfirst.repository.CommentRepository;
 import org.myfirst.repository.FirstThingRepository;
 import org.myfirst.repository.RoleRepository;
@@ -199,8 +198,14 @@ public class UserService {
 		System.out.println("first saved!");
 	}
 	
-	public List<Map<String, Object>> getFriendsRecommendation(String username) {
+	public List<User> getFriendsRecommendation(String username) {
+		List<User> result = new ArrayList<User>();
 		User user = findUserByUsername(username);
-		return userRepository.getFriendsRecommendation(user);
+		List<Map<String, Object>> recommendationsList = userRepository.getFriendsRecommendation(user);
+		for (Map<String, Object> recommendations: recommendationsList) {
+			User u = findUserByUsername((String)recommendations.get("friend"));
+			result.add(u);
+		}
+		return result;
 	}
 }
