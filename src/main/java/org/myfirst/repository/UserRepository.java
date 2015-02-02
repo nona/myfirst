@@ -13,12 +13,21 @@ public interface UserRepository extends GraphRepository<User>  {
 	
 	User findByEmail(String email);
 	
-    @Query( "start user=node({0}) " +
-            " match (user)-[:FOLLOWS*2..2]->(friendOfFriend) " +
-            " where NOT (user)-[:FOLLOWS]->(friendOfFriend) " +
-            " RETURN friendOfFriend.username as friend, COUNT(*) as mutualFriends" +
+    @Query( "START user=node({0}) " +
+            " MATCH (user)-[:FOLLOWS*2..2]->(friendOfFriend) " +
+            " WHERE NOT (user)-[:FOLLOWS]->(friendOfFriend) " +
+            " RETURN friendOfFriend.username AS friend, COUNT(*) AS mutualFriends" +
             " ORDER BY COUNT(*) DESC , friendOfFriend.username " +
-            " limit 10" )
+            " LIMIT 10" )
 	List<Map<String, Object>> getFriendsRecommendation(User user);
+    
+    @Query( "START user=node({0}) " +
+            " MATCH (user:User)-[:IS_INTERESTED_IN|:IS_TAGGED_WITH|:HAS_DONE*1..2]->(tag:Thing)<-[:IS_INTERESTED_IN|:IS_TAGGED_WITH|:HAS_DONE*1..2]-(people:User), " +
+            " (people)-[HAS_DONE]->(newThing)-[:IS_TAGGED_WITH]->(newTag:Thing) " +
+            " WHERE NOT user=people AND NOT (user)-[:IS_TAGGED_WITH|:HAS_DONE*1..2]->(newTag:Thing) " +
+            " RETURN people.username AS friend, id(newThing) AS firstThingID, COUNT(DISTINCT tag.tag) as mutualTags " +
+            " ORDER BY mutualTags desc, friend " +
+            " LIMIT 10" )
+	List<Map<String, Object>> getThingsRecommendation(User user);
     
 }

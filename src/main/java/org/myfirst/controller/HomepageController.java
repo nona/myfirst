@@ -38,18 +38,18 @@ public class HomepageController {
 	@RequestMapping("/home")
 	public String getHomePage(HttpServletRequest request) {
 
-		Result<FirstThing> m = thingService.findAllFirstThings();
-		for (FirstThing t: m) {
-			System.out.println(">>>" + t.getTitle() + " " + t.getDescription() + " " +t.getId());
-		}
-		
-		List<User> u = userService.readAll();
-		for (User t: u) {
-			System.out.println(">>>" + t.getUsername() + " " + t.getFirstName() + " " +t.getId() + " " + t.getEmail());
-			for (Thing ti: t.getInterests()) {
-				System.out.println(">>>>>>>>" + ti.getTag());
-			}
-		}
+//		Result<FirstThing> m = thingService.findAllFirstThings();
+//		for (FirstThing t: m) {
+//			System.out.println(">>>" + t.getTitle() + " " + t.getDescription() + " " + t.getId());
+//		}
+//		
+//		List<User> u = userService.readAll();
+//		for (User t: u) {
+//			System.out.println(">>>" + t.getUsername() + " " + t.getFirstName() + " " +t.getId() + " " + t.getEmail());
+//			for (Thing ti: t.getInterests()) {
+//				System.out.println(">>>>>>>>" + ti.getTag());
+//			}
+//		}
 //		thingService.deleteFirstThing((long)15);
 //		thingService.deleteFirstThing((long)16);
 //		thingService.deleteFirstThing((long)18);
@@ -63,12 +63,11 @@ public class HomepageController {
 		if (loggedUser == null) {
 			return "login";
 		}
-//		List<Map<String, Object>> recommendationsList = userService.getFriendsRecommendation(loggedUser.getUsername());
-//		for (Map<String, Object> recommendations: recommendationsList) {
-//			for (String rec: recommendations.keySet()) {
-//				System.out.println(">>>>>>>>>>>>>RECOMENDS: " + rec + " " + recommendations.get(rec));
-//			}
-//		}
+		List<FirstThing> recommendationsList = userService.getThingsRecommendation(loggedUser.getUsername());
+		for (FirstThing f: recommendationsList) {
+			System.out.println(">>>>>>>>>>>>>RECOMENDS: " + f.getTitle());
+
+		}
 		return "home";
 	}
 	

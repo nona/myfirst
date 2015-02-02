@@ -71,6 +71,7 @@ public class UserService {
 		return user;
 	}
 	
+	@Transactional
 	public List<User> readAll() {
 		List<User> users = new ArrayList<User>();
 		
@@ -85,23 +86,23 @@ public class UserService {
 	public HashSet<User> searchFor(String input) {
 		HashSet<User> result = new HashSet<User>();
 		Result<User> found;
-		found = userRepository.findAllByPropertyValue("username", input);
+		found = userRepository.findAllBySchemaPropertyValue("username", input);
 		for (User u: found) {
 			result.add(u);
 		}
-		found = userRepository.findAllByPropertyValue("firstName", input);
+		found = userRepository.findAllBySchemaPropertyValue("firstName", input);
 		for (User u: found) {
 			result.add(u);
 		}
-		found = userRepository.findAllByPropertyValue("middleName", input);
+		found = userRepository.findAllBySchemaPropertyValue("middleName", input);
 		for (User u: found) {
 			result.add(u);
 		}
-		found = userRepository.findAllByPropertyValue("lastName", input);
+		found = userRepository.findAllBySchemaPropertyValue("lastName", input);
 		for (User u: found) {
 			result.add(u);
 		}
-		found = userRepository.findAllByPropertyValue("email", input);
+		found = userRepository.findAllBySchemaPropertyValue("email", input);
 		for (User u: found) {
 			result.add(u);
 		}
@@ -205,6 +206,20 @@ public class UserService {
 		for (Map<String, Object> recommendations: recommendationsList) {
 			User u = findUserByUsername((String)recommendations.get("friend"));
 			result.add(u);
+		}
+		return result;
+	}
+	
+	public List<FirstThing> getThingsRecommendation(String username) {
+		List<FirstThing> result = new ArrayList<FirstThing>();
+		User user = findUserByUsername(username);
+		List<Map<String, Object>> recommendationsList = userRepository.getThingsRecommendation(user);
+		for (Map<String, Object> recommendations: recommendationsList) {
+			System.out.println(">>> first thing id=" + recommendations.get("firstThingID"));
+			System.out.println(">>> friend=" + recommendations.get("friend"));
+			System.out.println(">>> mutualTags=" + recommendations.get("mutualTags"));
+			FirstThing first = firstThingRepository.findOne((Long)recommendations.get("firstThingID"));
+			result.add(first);
 		}
 		return result;
 	}

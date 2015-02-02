@@ -96,7 +96,7 @@
 	<hr class="line"/>
 	<c:choose> 
 	  <c:when test="${!empty thing.image}">
-	   <img class="profile_picture" src="${thing.image}" alt="image" class="postImage"/>
+	   <img src="${thing.image}" alt="image" class="postImage"/>
 	  </c:when>
 	</c:choose>
 	<p>

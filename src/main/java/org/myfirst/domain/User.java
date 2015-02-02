@@ -15,8 +15,9 @@ public class User {
 
 	@GraphId
 	private Long id;
-	
+	@Indexed
 	private String firstName;
+	@Indexed
 	private String lastName;
 	
 	@Indexed
@@ -27,7 +28,7 @@ public class User {
 	private String email;
 	
 	private String country;
-	
+	@Indexed
 	private String middleName;
 	
 	private String gender;
@@ -59,13 +60,14 @@ public class User {
 	
 	public User() {}
 	
-	public User(String email, String username, String password, String firstName, String lastName, Role role) {
+	public User(String email, String username, String password, String firstName, String lastName, Role role, String image) {
 		this.email = email;
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.role = role;
+		this.profilePhotoLink = image;
 	}
 	
 	public User(String email, String username, String firstName, String lastName, Role role) {

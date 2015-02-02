@@ -33,6 +33,7 @@ public class LogInController {
 	@RequestMapping
 	public String getLoginPage() {
 		populateDB(false);
+		cleanDB(false);
 		return "login";
 	}
 	
@@ -83,6 +84,12 @@ public class LogInController {
 		if (populateDB) {
 			dbService.cleanDb();
 			dbService.populateDatabase();
+		}
+	}
+	
+	private void cleanDB(boolean cleanDB) {
+		if (cleanDB) {
+			dbService.cleanDb();
 		}
 	}
 }

@@ -29,6 +29,20 @@ public class FirstThing {
 	@Fetch @RelatedTo(type = "HAS_COMMENT")
 	private Set<Comment> comments;
 	
+	
+	
+	public FirstThing() {
+		super();
+	}
+	public FirstThing(String title, String description, String image,
+			String visibility, Set<Thing> tags) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.image = image;
+		this.visibility = visibility;
+		this.tags = tags;
+	}
 	public Long getId() {
 		return id;
 	}

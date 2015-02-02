@@ -90,10 +90,10 @@ public class FirstThingDto implements Serializable, Comparable<FirstThingDto> {
 
 	@Override
 	public int compareTo(FirstThingDto o) {
-		if (this.id.compareTo(o.id) != 0) {
+		if (o.date.compareTo(this.date) != 0) {
 			return o.date.compareTo(this.date);
 		}
-		return 0;
+		return o.id.compareTo(this.id);
 	}
 
 	@Override

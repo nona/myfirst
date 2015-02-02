@@ -141,6 +141,7 @@ public class ThingService {
 		return result;
 	}
 	
+	@Transactional
 	public Result<FirstThing> findAllFirstThings() {
 		return firstThingRepository.findAll();
 	}

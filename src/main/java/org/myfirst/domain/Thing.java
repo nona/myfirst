@@ -9,6 +9,20 @@ public class Thing {
 	@GraphId
 	private Long id;
 	private String tag;
+	
+	
+	
+	public Thing() {
+		super();
+	}
+	
+	
+	public Thing(String tag) {
+		super();
+		this.tag = tag;
+	}
+
+
 	public Long getId() {
 		return id;
 	}

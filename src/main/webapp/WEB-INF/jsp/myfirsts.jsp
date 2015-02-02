@@ -99,13 +99,32 @@
 	<p>
 	<%=first.getDescription()%>
 	</p>
-	<%=first.getVisibility()%>
 	<%
 		for(ThingDto t: first.getTags()) {
 	%>
 		#<%=t.getTag()%>
 	<%} %>
     </div> 
+    <div class="comment">
+    <%if (first.getComments() != null && !first.getComments().isEmpty()) { 
+    for (CommentDto c: first.getComments()) {%>
+    	<img src="<%=c.getCommentorProfilePic()%>"  class="small_icon"/>
+          <b><%=c.getUsername() %></b> (<%=c.getDate() %>)  <%=c.getContent() %> 
+          <br/> 
+    <% }
+    } %>
+    <form action="/myfirst/addComment" method="get" >
+    <input type="hidden" value='<%=user.getUsername() %>' name="username"/>
+    <input type="hidden" value='<%=first.getId() %>' name="thingId"/>
+	<%if(user.getProfilePhotoLink() != null && !user.getProfilePhotoLink().isEmpty()){ %>
+    <img class="small_icon" src="<%=user.getProfilePhotoLink()%>" alt="Profile picture" style="position:absolute;"/>
+    <%} else { %>
+    <img class="small_icon" src="<c:url value='/resources/images/profile.png'/>" alt="Profile picture" style="position:absolute;"/>
+    <%} %>
+    <input type="text" id="comment" name="comment" style="width: 320px;margin-left: 38px;"/>
+    <input type="submit" value="Comment"  class="submitBtn" style="width: 74px;height: 10px;padding: 0 0 15 0;"/>
+    </form>
+    </div>
 </div>
 <% } %>
 </div>
