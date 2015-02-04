@@ -50,6 +50,21 @@ public class User {
 	@Fetch @RelatedToVia(type = "HAS_DONE")
 	private Set<UserFirstThingRelationship> didForFirstTime;
 	
+	@Fetch @RelatedTo(type = "NOT_INTERESTED_IN")
+	private Set<FirstThing> notInterestedInThings;
+	
+	@Fetch @RelatedTo(type = "ALREADY_DONE")
+	private Set<FirstThing> alreadyDoneThings;
+	
+	@Fetch @RelatedTo(type = "WANTS_TO_DO")
+	private Set<FirstThing> toDos;
+	
+	@Fetch @RelatedTo(type = "MARKED_AS_TODO")
+	private Set<FirstThing> markedAsToDos;
+	
+	@Fetch @RelatedToVia(type = "WANTS_TO_DO")
+	private Set<ToDoRelationship> toDoRelationships;
+	
 	@Fetch @RelatedTo(type = "IS_INTERESTED_IN")
 	private Set<Thing> interests;
 	
@@ -203,14 +218,6 @@ public class User {
 		this.followers = followers;
 	}
 
-//	public Set<User> getFriends() {
-//		return friends;
-//	}
-//
-//	public void setFriends(Set<User> friends) {
-//		this.friends = friends;
-//	}
-
 	public Set<FirstThing> getFirstThings() {
 		return firstThings;
 	}
@@ -284,23 +291,84 @@ public class User {
 	public void setDidForFirstTime(Set<UserFirstThingRelationship> didForFirstTime) {
 		this.didForFirstTime = didForFirstTime;
 	}
-
-//	public Set<FollowRelationship> getFollowsRelationship() {
-//		return followsRelationship;
-//	}
-//
-//	public void setFollowsRelationship(Set<FollowRelationship> followsRelationship) {
-//		this.followsRelationship = followsRelationship;
-//	}
 	
     public void removeFirstThing(FirstThing first) {
-    	firstThings.remove(first);
     	for (UserFirstThingRelationship rel: didForFirstTime) {
     		if (rel.getFirstThing().getId().equals(first.getId())) {
     			didForFirstTime.remove(rel);
     		}
     	}
+    	firstThings.remove(first);
     }
     
+    public ToDoRelationship addToDo(FirstThing firstThing, String dueDate) {
+    	System.out.println(">>> addToDo " + firstThing.getTitle());
+    	ToDoRelationship first = new ToDoRelationship(this, firstThing, dueDate);
+    	toDoRelationships.add(first);
+    	for (ToDoRelationship r: toDoRelationships) {
+    		System.out.println(">>>> " + r.getFirstThing().getTitle());
+    	}
+    	return first;
+    }
     
+    public void removeToDo(FirstThing first) {
+    	for (ToDoRelationship rel: toDoRelationships) {
+    		if (rel.getFirstThing().getId().equals(first.getId())) {
+    			toDoRelationships.remove(rel);
+    		}
+    	}
+    	toDos.remove(first);
+    }
+
+	public Set<FirstThing> getNotInterestedInThings() {
+		return notInterestedInThings;
+	}
+
+	public void setNotInterestedInThings(Set<FirstThing> notInterestedInThings) {
+		this.notInterestedInThings = notInterestedInThings;
+	}
+
+	public Set<FirstThing> getAlreadyDoneThings() {
+		return alreadyDoneThings;
+	}
+
+	public void setAlreadyDoneThings(Set<FirstThing> alreadyDoneThings) {
+		this.alreadyDoneThings = alreadyDoneThings;
+	}
+
+	public Set<FirstThing> getToDos() {
+		return toDos;
+	}
+
+	public void setToDos(Set<FirstThing> toDos) {
+		this.toDos = toDos;
+	}
+
+	public Set<ToDoRelationship> getToDoRelationships() {
+		return toDoRelationships;
+	}
+
+	public void setToDoRelationships(Set<ToDoRelationship> toDoRelationships) {
+		this.toDoRelationships = toDoRelationships;
+	}
+	
+    public Set<FirstThing> getMarkedAsToDos() {
+		return markedAsToDos;
+	}
+
+	public void setMarkedAsToDos(Set<FirstThing> markedAsToDos) {
+		this.markedAsToDos = markedAsToDos;
+	}
+
+	public void addNotInterestedInThing(FirstThing f) {
+    	notInterestedInThings.add(f);
+    }
+    
+    public void addAlreadyDone(FirstThing f) {
+    	alreadyDoneThings.add(f);
+    }
+    
+    public void addMarkedAsToDo(FirstThing f) {
+    	markedAsToDos.add(f);
+    }
 }

@@ -85,6 +85,7 @@ function editProfile() {
 		middleName: $('#newMiddleName').val(),
 		lastName: $('#newLastName').val(),
 		country: $('#newCountry').val(),
+		gender: $('newGender').val(),
 		dateOfBirth: $('#newDateOfBirth').val(),
 		email: $('#newEmail').val()
 	}, 

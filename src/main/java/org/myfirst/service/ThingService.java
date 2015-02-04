@@ -116,6 +116,22 @@ public class ThingService {
 		} 
 	}
 	
+	public User addNewToDoByUser(FirstThing first, String username, String dueDate) {
+		User user = userRepository.findByUsername(username);
+		firstThingRepository.save(first);
+	    user.addToDo(first, dueDate);
+		return userRepository.save(user);
+	}
+	
+	public void deleteToDo(Long id) {
+		
+		try (Transaction tx = graphDb.beginTx()) {
+			System.out.println("deleting...");
+			firstThingRepository.delete(id);
+			tx.success(); 
+		} 
+	}
+	
 	public void deleteAllComments() {
 		
 		try (Transaction tx = graphDb.beginTx()) {
@@ -125,19 +141,25 @@ public class ThingService {
 		} 
 	}
 	
-	public FirstThing findMyFirstThingById(Long id) {
+	public FirstThing findFirstThingById(Long id) {
 		return firstThingRepository.findOne(id);
 	}
 	
 	public User removeFirstThingFromUser(FirstThing firstThing, String username) {
 		User user = userRepository.findByUsername(username);
-		System.out.println("name=== " + user.getFirstName());
 		Long id = firstThing.getId();
-		System.out.println("id==== " + id);
 	    user.removeFirstThing(firstThing);
 	    User result = userRepository.save(user);
-	    System.out.println("removed!!!!");
 		deleteFirstThing(id);
+		return result;
+	}
+	
+	public User removeToDoFromUser(FirstThing firstThing, String username) {
+		User user = userRepository.findByUsername(username);
+		Long id = firstThing.getId();
+	    user.removeToDo(firstThing);
+	    User result = userRepository.save(user);
+		deleteToDo(id);
 		return result;
 	}
 	
@@ -145,5 +167,30 @@ public class ThingService {
 	public Result<FirstThing> findAllFirstThings() {
 		return firstThingRepository.findAll();
 	}
+	
+	public User userNotInterestedInThing(String id, String username) {
+		FirstThing first = this.findFirstThingById(new Long(id));
+		User user = userRepository.findByUsername(username);
+		user.addNotInterestedInThing(first);
+		User result = userRepository.save(user);
+		return result;
+	}
+	
+	public User userAlreadyDoneThing(String id, String username) {
+		System.out.println(">>>>>Username:: " + username);
+		FirstThing first = this.findFirstThingById(new Long(id));
+		User user = userRepository.findByUsername(username);
+		user.addAlreadyDone(first);
+		User result = userRepository.save(user);
+		System.out.println(">>>>>Username:: " + result.getUsername());
+		return result;
+	}
 
+	public User userMarkedThingAsToDo(String id, String username) {
+		FirstThing first = this.findFirstThingById(new Long(id));
+		User user = userRepository.findByUsername(username);
+		user.addMarkedAsToDo(first);
+		User result = userRepository.save(user);
+		return result;
+	}
 }

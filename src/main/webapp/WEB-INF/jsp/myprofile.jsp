@@ -119,6 +119,14 @@
                     %>
                     </select>
                 </p>
+                <p> 
+                	<label for="newGender" >Your gender</label>
+                    <select id="newGender">
+	                    <option value="">-</option>
+	                    <option value="F" <%if("F".equals(user.getGender())) {%>selected="selected"<%}%>>F</option>
+	                    <option value="M" <%if("M".equals(user.getGender())) {%>selected="selected"<%}%>>M</option>
+                    </select>
+                </p>
                 <p>
                 	<label for="newDateOfBirth"> Your date of birth</label>
                     <input id="newDateOfBirth" name="newDateOfBirth" required="required" type="date" value="<%=user.getDateOfBirth()%>"/>

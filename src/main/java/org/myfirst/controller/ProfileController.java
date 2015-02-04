@@ -39,6 +39,7 @@ public class ProfileController {
 			@RequestParam String middleName,
 			@RequestParam String lastName,
 			@RequestParam String country,
+			@RequestParam String gender,
 			@RequestParam String dateOfBirth,
 			HttpServletRequest request) {
 
@@ -51,6 +52,7 @@ public class ProfileController {
 		existingUser.setLastName(lastName);
 		existingUser.setDateOfBirth(dateOfBirth);
 		existingUser.setCountry(country);
+		existingUser.setGender(gender);
 		
 		UserDto existingUserDto = Mapper.map(userService.update(existingUser), 1, false);
 		request.getSession().setAttribute("loggedUser", existingUserDto);

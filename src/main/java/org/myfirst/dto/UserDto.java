@@ -21,6 +21,7 @@ public class UserDto implements Serializable {
 	private String dateOfBirth;
 	private Integer role;
 	private Set<ThingDto> interests;
+	private TreeSet<FirstThingDto> toDos;
 	private TreeSet<FirstThingDto> firstThings;
 	private Set<UserDto> following;
 	private Set<UserDto> followers;
@@ -116,6 +117,12 @@ public class UserDto implements Serializable {
 	}
 	public void setFirstThingsCount(Integer firstThingsCount) {
 		this.firstThingsCount = firstThingsCount;
+	}
+	public TreeSet<FirstThingDto> getToDos() {
+		return toDos;
+	}
+	public void setToDos(TreeSet<FirstThingDto> toDos) {
+		this.toDos = toDos;
 	}
 	public Integer getFollowingCount() {
 		return followingCount;

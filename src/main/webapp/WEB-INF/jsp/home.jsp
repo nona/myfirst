@@ -31,6 +31,7 @@ for (FirstThingDto first: user.getFirstThings()) {
 <div id="container">
 <div id="wrapper">
 	<div class="box form">
+	<h1>Add new first thing:</h1>
         <form id="firstThingForm" method="post" action="/myfirst/addFirstThing"  enctype="multipart/form-data">	
         <p>
         <label for="title" >Title:</label>

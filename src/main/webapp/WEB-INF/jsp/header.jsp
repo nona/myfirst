@@ -32,6 +32,10 @@
 				<img class="small_icon" src="<c:url value='/resources/images/home.png'/>" alt="Home" title="Home"/>
 				Home
 			</a>
+			<a href="<c:url value='/todo'/>" >
+				<img class="small_icon" src="<c:url value='/resources/images/time.png'/>" alt="What to do?" title="What to do?"/>
+				What to do?
+			</a>
 		</td>
 		<td>
 			<a href="<c:url value='/following'/>" >

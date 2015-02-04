@@ -35,38 +35,20 @@ public class HomepageController {
 	@Autowired
 	private UserService userService;
 	
+	@RequestMapping("/*")
+	public String getPage(HttpServletRequest request) {
+		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
+		if (loggedUser == null) {
+			return "redirect:login";
+		}
+		return "redirect:home";
+	}
+	
 	@RequestMapping("/home")
 	public String getHomePage(HttpServletRequest request) {
-
-//		Result<FirstThing> m = thingService.findAllFirstThings();
-//		for (FirstThing t: m) {
-//			System.out.println(">>>" + t.getTitle() + " " + t.getDescription() + " " + t.getId());
-//		}
-//		
-//		List<User> u = userService.readAll();
-//		for (User t: u) {
-//			System.out.println(">>>" + t.getUsername() + " " + t.getFirstName() + " " +t.getId() + " " + t.getEmail());
-//			for (Thing ti: t.getInterests()) {
-//				System.out.println(">>>>>>>>" + ti.getTag());
-//			}
-//		}
-//		thingService.deleteFirstThing((long)15);
-//		thingService.deleteFirstThing((long)16);
-//		thingService.deleteFirstThing((long)18);
-//		thingService.deleteFirstThing((long)27);
-		//thingService.deleteAllComments();
-		//userService.deleteUserById((long)1);
-//		userService.deleteUserById((long)3);
-//		userService.deleteUserById((long)9);
-//		userService.deleteUserById((long)59);
 		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
 		if (loggedUser == null) {
 			return "login";
-		}
-		List<FirstThing> recommendationsList = userService.getThingsRecommendation(loggedUser.getUsername());
-		for (FirstThing f: recommendationsList) {
-			System.out.println(">>>>>>>>>>>>>RECOMENDS: " + f.getTitle());
-
 		}
 		return "home";
 	}
@@ -102,14 +84,6 @@ public class HomepageController {
 		return "/profile";
 	}
 	
-	@RequestMapping("/*")
-	public String getPage(HttpServletRequest request) {
-		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
-		if (loggedUser == null) {
-			return "redirect:login";
-		}
-		return "redirect:home";
-	}
 	
     @RequestMapping(value = "/addFirstThing")
     public String addFirstThing(Model model, @RequestParam("visibility") String visibility, 
@@ -165,7 +139,7 @@ public class HomepageController {
 
 		String username = ((UserDto)request.getSession().getAttribute("loggedUser")).getUsername();
 		
-		FirstThing first = thingService.findMyFirstThingById(new Long(firstThingId));
+		FirstThing first = thingService.findFirstThingById(new Long(firstThingId));
 		String link = first.getImage();
 		
 		if (first != null && link != null) {

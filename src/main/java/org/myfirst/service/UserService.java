@@ -8,6 +8,7 @@ import java.util.Map;
 import org.myfirst.domain.Comment;
 import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.User;
+import org.myfirst.dto.RecommendationDto;
 import org.myfirst.repository.CommentRepository;
 import org.myfirst.repository.FirstThingRepository;
 import org.myfirst.repository.RoleRepository;
@@ -210,16 +211,20 @@ public class UserService {
 		return result;
 	}
 	
-	public List<FirstThing> getThingsRecommendation(String username) {
-		List<FirstThing> result = new ArrayList<FirstThing>();
+	public List<RecommendationDto> getThingsRecommendation(String username) {
+		List<RecommendationDto> result = new ArrayList<RecommendationDto>();
 		User user = findUserByUsername(username);
 		List<Map<String, Object>> recommendationsList = userRepository.getThingsRecommendation(user);
 		for (Map<String, Object> recommendations: recommendationsList) {
 			System.out.println(">>> first thing id=" + recommendations.get("firstThingID"));
 			System.out.println(">>> friend=" + recommendations.get("friend"));
+			System.out.println(">>> title=" + recommendations.get("title"));
 			System.out.println(">>> mutualTags=" + recommendations.get("mutualTags"));
-			FirstThing first = firstThingRepository.findOne((Long)recommendations.get("firstThingID"));
-			result.add(first);
+			RecommendationDto r = new RecommendationDto(
+										(Long)recommendations.get("firstThingID"), 
+										(String)recommendations.get("title"), 
+										(String)recommendations.get("friend"));
+			result.add(r);
 		}
 		return result;
 	}

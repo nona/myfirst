@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.myfirst.domain.Comment;
 import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.Thing;
+import org.myfirst.domain.ToDoRelationship;
 import org.myfirst.domain.User;
 import org.myfirst.domain.UserFirstThingRelationship;
 import org.myfirst.dto.UserDto;
@@ -29,11 +31,13 @@ public class Mapper {
 			dto.setMiddleName(user.getMiddleName());
 			dto.setLastName(user.getLastName());
 			dto.setCountry(user.getCountry());
+			dto.setGender(user.getGender());
 			dto.setDateOfBirth(user.getDateOfBirth());
 			dto.setEmail(user.getEmail());
 			dto.setInterests(mapThings(user.getInterests()));
 			dto.setFirstThingsCount(user.getFirstThings() == null ? 0 : user.getFirstThings().size());
 			dto.setFirstThings(mapFirstThings(user.getDidForFirstTime()));
+			dto.setToDos(mapToDos(user.getToDoRelationships()));
 			dto.setFollowers(mapUsersSet(user.getFollowers(), depth, user.getFollows()));
 			dto.setFollowing(mapUsersSet(user.getFollows(), depth, null));
 			dto.setRole(user.getRole() != null ? user.getRole().getRole() : 2);
@@ -102,7 +106,29 @@ public class Mapper {
 		return dtos;
 	}
 	
+	public static TreeSet<FirstThingDto> mapToDos(Set<ToDoRelationship> set) {
+		TreeSet<FirstThingDto> dtos = new TreeSet<FirstThingDto>();
+		for (ToDoRelationship first: set) {
+			dtos.add(mapMyFirst(first));
+		}
+		return dtos;
+	}
+	
 	public static FirstThingDto mapMyFirst(UserFirstThingRelationship firstRel) {
+		FirstThingDto dto = new FirstThingDto();
+		FirstThing first = firstRel.getFirstThing();
+		dto.setId(first.getId());
+		dto.setDescription(first.getDescription());
+		dto.setVisibility(first.getVisibility());
+		dto.setTags(mapThings(first.getTags()));
+		dto.setTitle(first.getTitle());
+		dto.setImage(first.getImage());
+		dto.setDate(firstRel.getDate());
+		dto.setComments(mapCommentSet(first.getComments()));
+		return dto;
+	}
+	
+	public static FirstThingDto mapMyFirst(ToDoRelationship firstRel) {
 		FirstThingDto dto = new FirstThingDto();
 		FirstThing first = firstRel.getFirstThing();
 		dto.setId(first.getId());
@@ -133,4 +159,5 @@ public class Mapper {
 		}
 		return dtos;
 	}
+
 }
