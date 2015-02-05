@@ -7,20 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.Thing;
-import org.myfirst.domain.User;
 import org.myfirst.dto.Mapper;
 import org.myfirst.dto.RecommendationDto;
 import org.myfirst.dto.UserDto;
-import org.myfirst.service.FTPFunctions;
 import org.myfirst.service.ThingService;
 import org.myfirst.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class ToDoController {

@@ -1,28 +1,24 @@
 package org.myfirst.controller;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.Thing;
 import org.myfirst.domain.User;
+import org.myfirst.dto.FirstThingDto;
 import org.myfirst.dto.Mapper;
 import org.myfirst.dto.UserDto;
 import org.myfirst.service.FTPFunctions;
 import org.myfirst.service.ThingService;
 import org.myfirst.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,11 +41,19 @@ public class HomepageController {
 	}
 	
 	@RequestMapping("/home")
-	public String getHomePage(HttpServletRequest request) {
+	public String getHomePage(Model model, @RequestParam(value="page", defaultValue="1",required=false) String page,
+			HttpServletRequest request) {
 		UserDto loggedUser = (UserDto)request.getSession().getAttribute("loggedUser");
 		if (loggedUser == null) {
 			return "login";
 		}
+
+		String username = loggedUser.getUsername();
+		int numberOfPages = userService.getNumberOfPages(username);
+		model.addAttribute("numberOfPages", numberOfPages);
+		
+		TreeSet<FirstThingDto> posts = userService.getTimelinePosts(username, Integer.valueOf(page));
+		model.addAttribute("firstThings", posts);
 		return "home";
 	}
 	

@@ -27,7 +27,8 @@ public class DBCleanerService {
         return result;
     }
 
-    private void removeNodes(Map<String, Object> result) {
+    @SuppressWarnings("deprecation")
+	private void removeNodes(Map<String, Object> result) {
         int nodes = 0, relationships = 0;
         for (Node node : graph.getAllNodes()) {
             for (Relationship rel : node.getRelationships(Direction.OUTGOING)) {

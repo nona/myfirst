@@ -28,8 +28,6 @@ public class LogInController {
 	@Autowired
 	private DBPopulatorService dbService;
 	
-	private UserDto loggedUser;
-	
 	@RequestMapping
 	public String getLoginPage() {
 		populateDB(false);

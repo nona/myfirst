@@ -6,13 +6,10 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.data.neo4j.annotation.EndNode;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
-import org.springframework.data.neo4j.annotation.RelationshipEntity;
-import org.springframework.data.neo4j.annotation.StartNode;
 
 @NodeEntity
 public class Comment {
@@ -35,7 +32,6 @@ public class Comment {
 		super();
 		this.content = content;
 		this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
-		System.out.println("new comment created");
 	}
 
 	public Long getId() {

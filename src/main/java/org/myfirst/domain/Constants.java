@@ -5,13 +5,7 @@ import java.util.Locale;
 
 public class Constants {
 
-
-	
-	
-	public static enum Gender {
-		MALE,
-		FEMALE
-	}
+	public static int ITEMS_PER_PAGE = 10;
 
 	public static ArrayList<String> getCountries() {
 		String[] locales = Locale.getISOCountries();

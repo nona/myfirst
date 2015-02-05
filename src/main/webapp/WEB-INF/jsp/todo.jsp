@@ -77,7 +77,6 @@
 	        <input type="text" id="tags" name="tags" placeholder="e.g. #dog, #kiss, #car" value="${tags}"/>
         </p>
           <input type="submit" value="ADD"  class="submitBtn" style="width: 50px;height: 10px;padding: 0 0 15 0;"/>
-         </p>
 		</form>
     </div> 
 </div>

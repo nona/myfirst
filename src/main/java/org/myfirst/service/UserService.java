@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import org.myfirst.domain.Comment;
+import org.myfirst.domain.Constants;
 import org.myfirst.domain.FirstThing;
 import org.myfirst.domain.User;
+import org.myfirst.dto.FirstThingDto;
+import org.myfirst.dto.Mapper;
 import org.myfirst.dto.RecommendationDto;
 import org.myfirst.repository.CommentRepository;
 import org.myfirst.repository.FirstThingRepository;
@@ -35,6 +39,9 @@ public class UserService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private ThingService thingService;
 	
 	@Autowired private GraphDatabaseService graphDb;
 	
@@ -225,6 +232,42 @@ public class UserService {
 										(String)recommendations.get("title"), 
 										(String)recommendations.get("friend"));
 			result.add(r);
+		}
+		return result;
+	}
+	
+	public long getFollowingsPostsCount(String username) {
+		long result = 0;
+		User user = findUserByUsername(username);
+		List<Map<String, Object>> resultList = userRepository.getFollowingsPostsCount(user);
+		for (Map<String, Object> resMap: resultList) {
+			result = (Long)resMap.get("count");
+		}
+		return result;
+	}
+	
+	public int getNumberOfPages(String username) {
+		return (int)Math.floor(getFollowingsPostsCount(username)/Constants.ITEMS_PER_PAGE);
+	}
+	
+	public TreeSet<FirstThingDto> getTimelinePosts(String username, int page) {
+		TreeSet<FirstThingDto> result = new TreeSet<FirstThingDto>();
+		User user = findUserByUsername(username);
+		List<Map<String, Object>> thingsList = userRepository.getTimelinePosts(user, (page - 1) * Constants.ITEMS_PER_PAGE, Constants.ITEMS_PER_PAGE);
+		for (Map<String, Object> things: thingsList) {
+			FirstThingDto t = new FirstThingDto();
+			Long id = (Long)things.get("id"); 
+			FirstThing first = thingService.findFirstThingById(id);
+			t.setId(id);
+			t.setDate((String)things.get("date"));
+			t.setUsername((String)things.get("username"));
+			t.setProfilePhotoLink((String)things.get("profilePhotoLink"));
+			t.setImage(first.getImage());
+			t.setTitle(first.getTitle());
+			t.setTags(Mapper.mapThings(first.getTags()));
+			t.setDescription(first.getDescription());
+			t.setComments(Mapper.mapCommentSet(first.getComments()));
+			result.add(t);
 		}
 		return result;
 	}

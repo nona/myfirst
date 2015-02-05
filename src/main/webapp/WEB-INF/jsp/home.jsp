@@ -46,7 +46,7 @@ for (FirstThingDto first: user.getFirstThings()) {
 	        <input type="text" id="tags" name="tags" placeholder="e.g. #dog, #kiss, #car" />
         </p>
 	  	  <img id="image_preview" src="" alt="your image" style="display:none;"/>
-         <p class="save button">
+
         <div class='file_browse_wrapper'>
 	  	  <input  type="file" name="file" id="file" class="file_browse" accept="image/gif, image/jpeg, image/png" onchange="readURL(this);"/>
 	  	</div>
@@ -57,11 +57,67 @@ for (FirstThingDto first: user.getFirstThings()) {
 			<option value="private">Only Me</option>
           </select>
           <input type="submit" value="Share"  class="submitBtn" style="width: 50px;height: 10px;padding: 0 0 15 0;"/>
-         </p>
+
 		</form>
     </div> 
 </div>
-</div>
 
+<c:forEach items="${firstThings}" var="thing">
+	<div id="wrapper">
+	<div class="box form">
+	<div class="title">
+	
+	<img src="${thing.profilePhotoLink}"  class="small_icon"/>
+		${thing.username}
+		<hr class="firstLine"/>
+	</div>
+	<div class="title">
+		<span class="label">${thing.title}</span>
+		<span class="date">${thing.date}
+		</span>
+	</div>
+	<hr class="line"/>
+	<c:choose> 
+	  <c:when test="${!empty thing.image}">
+	   <img src="${thing.image}" alt="image" class="postImage"/>
+	  </c:when>
+	</c:choose>
+	<p>
+	${thing.description}
+	</p>
+	<c:forEach items="${thing.tags}" var="tag">
+          #${tag.tag} 
+      </c:forEach>
+    </div> 
+    <div class="comment">
+    <c:if test="${not empty thing.comments}">
+    	<c:forEach items="${thing.comments}" var="c">
+    	<img src="${c.commentorProfilePic}"  class="small_icon"/>
+          <b>${c.username}</b> (${c.date})  ${c.content} 
+          <br/>
+      </c:forEach>
+    </c:if>
+    <form action="/myfirst/addComment" method="get" >
+    <input type="hidden" value='${viewed.username}' name="username"/>
+    <input type="hidden" value='${thing.id}' name="thingId"/>
+	<%if(user.getProfilePhotoLink() != null && !user.getProfilePhotoLink().isEmpty()){ %>
+    <img class="small_icon" src="<%=user.getProfilePhotoLink()%>" alt="Profile picture" style="position:absolute;"/>
+    <%} else { %>
+    <img class="small_icon" src="<c:url value='/resources/images/profile.png'/>" alt="Profile picture" style="position:absolute;"/>
+    <%} %>
+    <input type="text" id="comment" name="comment" style="width: 320px;margin-left: 38px;"/>
+    <input type="submit" value="Comment"  class="submitBtn" style="width: 74px;height: 10px;padding: 0 0 15 0;"/>
+    </form>
+    </div>
+</div>
+</c:forEach>
+</div>
+<div id="wrapper">
+<div class="box form">
+<c:forEach var="i" begin="1" end="${numberOfPages}">
+	<a href="<c:url value='/home?page=${i}'/>" >${i}</a> 
+</c:forEach>
+</div>
+</div>
 </body>
 </html>

@@ -30,4 +30,21 @@ public interface UserRepository extends GraphRepository<User>  {
             " LIMIT 10" )
 	List<Map<String, Object>> getThingsRecommendation(User user);
     
+    @Query( "START user=node({0}) " +
+            " MATCH " +
+            " (user)-[:FOLLOWS]->(people), " +
+            " (people)-[d:HAS_DONE]->(firstThing) " +
+            " RETURN count(*) as count" )
+	List<Map<String, Object>> getFollowingsPostsCount(User user);
+    
+    @Query( "START user=node({0}) " +
+            " MATCH " +
+            " (user)-[:FOLLOWS]->(people), " +
+            " (people)-[d:HAS_DONE]->(firstThing) " +
+            " RETURN id(firstThing) as id, d.date as date, people.username as username, people.profilePhotoLink as profilePhotoLink " +
+            " ORDER BY d.date DESC " +
+            " SKIP {1} " +
+            " LIMIT {2}" )
+	List<Map<String, Object>> getTimelinePosts(User user, int skipNumber, int itemsPerPage);
+    
 }

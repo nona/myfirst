@@ -23,6 +23,10 @@ public class FirstThingDto implements Serializable, Comparable<FirstThingDto> {
 	private String title;
 	
 	private String date;
+	
+	private String username;
+	
+	private String profilePhotoLink;
 
 	public String getDescription() {
 		return description;
@@ -86,6 +90,27 @@ public class FirstThingDto implements Serializable, Comparable<FirstThingDto> {
 
 	public void setComments(Set<CommentDto> comments) {
 		this.comments = new TreeSet<CommentDto> (comments);
+	}
+	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getProfilePhotoLink() {
+		return profilePhotoLink;
+	}
+
+	public void setProfilePhotoLink(String profilePhotoLink) {
+		this.profilePhotoLink = profilePhotoLink;
+	}
+
+	public void setComments(TreeSet<CommentDto> comments) {
+		this.comments = comments;
 	}
 
 	@Override

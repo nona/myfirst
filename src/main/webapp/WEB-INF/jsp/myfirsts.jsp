@@ -59,7 +59,7 @@
 		       <%
 		       	for (ThingDto t: user.getInterests()) {
 		       %>
-                	<%="#" + t.getTag()%><a href="#" onclick="removeInterest('<%=t.getTag()%>');">
+                	<%="#" + t.getTag()%>
                 <%
                 	}
                 %>
