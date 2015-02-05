@@ -240,20 +240,13 @@ public class User {
     }
     
     public UserFirstThingRelationship didForFirstTime(FirstThing firstThing) {
-    	System.out.println(">>> didForFirstTime " + firstThing.getTitle());
     	UserFirstThingRelationship first = new UserFirstThingRelationship(this, firstThing);
     	didForFirstTime.add(first);
-    	for (UserFirstThingRelationship r: didForFirstTime) {
-    		System.out.println(">>>> " + r.getFirstThing().getTitle());
-    	}
     	return first;
     }
 
     public void notInterestedIn(Thing thing) {
     	interests.remove(thing);
-    	for (Thing t: interests) {
-    		System.out.println(">>."+t.getTag());
-    	}
     }
 
     public void follow(User user) {
@@ -302,12 +295,8 @@ public class User {
     }
     
     public ToDoRelationship addToDo(FirstThing firstThing, String dueDate) {
-    	System.out.println(">>> addToDo " + firstThing.getTitle());
     	ToDoRelationship first = new ToDoRelationship(this, firstThing, dueDate);
     	toDoRelationships.add(first);
-    	for (ToDoRelationship r: toDoRelationships) {
-    		System.out.println(">>>> " + r.getFirstThing().getTitle());
-    	}
     	return first;
     }
     

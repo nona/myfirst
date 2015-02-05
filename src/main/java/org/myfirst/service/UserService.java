@@ -166,7 +166,6 @@ public class UserService {
 	public void deleteUserById(Long id) {
 
 		try (Transaction tx = graphDb.beginTx()) {
-			System.out.println("deleting...");
 			userRepository.delete(id);
 			tx.success(); 
 		} 
@@ -196,15 +195,12 @@ public class UserService {
 	public void addComment(String loggedUser, String comment,
 			String thingId) {
 		User user = this.findUserByUsername(loggedUser);
-		System.out.println(">>> user:" + user + " " + user.getUsername());
 		FirstThing first = firstThingRepository.findOne(new Long(thingId));
-		System.out.println(">>> first: " + first.getTitle());
 		Comment c = new Comment(comment);
 		c.addCommentor(user);
 		commentRepository.save(c);
 		first.addComment(c);
 		firstThingRepository.save(first);
-		System.out.println("first saved!");
 	}
 	
 	public List<User> getFriendsRecommendation(String username) {
@@ -223,10 +219,6 @@ public class UserService {
 		User user = findUserByUsername(username);
 		List<Map<String, Object>> recommendationsList = userRepository.getThingsRecommendation(user);
 		for (Map<String, Object> recommendations: recommendationsList) {
-			System.out.println(">>> first thing id=" + recommendations.get("firstThingID"));
-			System.out.println(">>> friend=" + recommendations.get("friend"));
-			System.out.println(">>> title=" + recommendations.get("title"));
-			System.out.println(">>> mutualTags=" + recommendations.get("mutualTags"));
 			RecommendationDto r = new RecommendationDto(
 										(Long)recommendations.get("firstThingID"), 
 										(String)recommendations.get("title"), 

@@ -103,9 +103,6 @@ public class FirstThing {
     
     public void addComment(Comment comment) {
     	comments.add(comment);
-    	for (Comment c: comments) {
-    		System.out.println(">> " + c.getContent());
-    	}
     }
     
     public void removeComment(Comment comment) {

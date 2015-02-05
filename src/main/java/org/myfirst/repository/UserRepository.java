@@ -25,6 +25,7 @@ public interface UserRepository extends GraphRepository<User>  {
             " MATCH (user:User)-[:IS_INTERESTED_IN|:IS_TAGGED_WITH|:HAS_DONE*1..2]->(tag:Thing)<-[:IS_INTERESTED_IN|:IS_TAGGED_WITH|:HAS_DONE*1..2]-(people:User), " +
             " (people)-[:HAS_DONE]->(newThing)-[:IS_TAGGED_WITH]->(newTag:Thing) " +
             " WHERE NOT user=people AND NOT (user)-[:IS_TAGGED_WITH|:NOT_INTERESTED_IN|:ALREADY_DONE|:MARKED_AS_TODO|:HAS_DONE*1..2]->(newTag:Thing) " +
+            " AND newThing.visibility IN ['public'] " +
             " RETURN people.username AS friend, id(newThing) AS firstThingID, newThing.title as title, COUNT(DISTINCT tag.tag) as mutualTags " +
             " ORDER BY mutualTags desc, friend " +
             " LIMIT 10" )
@@ -34,6 +35,7 @@ public interface UserRepository extends GraphRepository<User>  {
             " MATCH " +
             " (user)-[:FOLLOWS]->(people), " +
             " (people)-[d:HAS_DONE]->(firstThing) " +
+            " WHERE firstThing.visibility IN ['public', 'following']" +
             " RETURN count(*) as count" )
 	List<Map<String, Object>> getFollowingsPostsCount(User user);
     
@@ -41,6 +43,7 @@ public interface UserRepository extends GraphRepository<User>  {
             " MATCH " +
             " (user)-[:FOLLOWS]->(people), " +
             " (people)-[d:HAS_DONE]->(firstThing) " +
+            " WHERE firstThing.visibility IN ['public', 'following']" +
             " RETURN id(firstThing) as id, d.date as date, people.username as username, people.profilePhotoLink as profilePhotoLink " +
             " ORDER BY d.date DESC " +
             " SKIP {1} " +

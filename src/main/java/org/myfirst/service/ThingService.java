@@ -110,7 +110,6 @@ public class ThingService {
 	public void deleteFirstThing(Long id) {
 		
 		try (Transaction tx = graphDb.beginTx()) {
-			System.out.println("deleting...");
 			firstThingRepository.delete(id);
 			tx.success(); 
 		} 
@@ -126,7 +125,6 @@ public class ThingService {
 	public void deleteToDo(Long id) {
 		
 		try (Transaction tx = graphDb.beginTx()) {
-			System.out.println("deleting...");
 			firstThingRepository.delete(id);
 			tx.success(); 
 		} 
@@ -135,7 +133,6 @@ public class ThingService {
 	public void deleteAllComments() {
 		
 		try (Transaction tx = graphDb.beginTx()) {
-			System.out.println("deleting...");
 			commentRepository.deleteAll();
 			tx.success(); 
 		} 
@@ -177,12 +174,10 @@ public class ThingService {
 	}
 	
 	public User userAlreadyDoneThing(String id, String username) {
-		System.out.println(">>>>>Username:: " + username);
 		FirstThing first = this.findFirstThingById(new Long(id));
 		User user = userRepository.findByUsername(username);
 		user.addAlreadyDone(first);
 		User result = userRepository.save(user);
-		System.out.println(">>>>>Username:: " + result.getUsername());
 		return result;
 	}
 

@@ -64,10 +64,8 @@ public class Mapper {
 			Set<UserDto> dtos = new HashSet<UserDto>();
 			for (User user: users) {
 				if (following != null && following.size() > 0 && following.contains(user)) {
-					System.out.println(">> following:: " + user.getUsername());
 					dtos.add(map(user, 2, true));
 				} else {
-					System.out.println(">> not following:: " + user.getUsername());
 					dtos.add(map(user, 2, false));
 				}
 			}

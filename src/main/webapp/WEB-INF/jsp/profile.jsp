@@ -83,10 +83,11 @@
 	</tr>
     </table>
     </div>
-  			<c:choose>
-			  <c:when test="${not empty viewed.firstThings}">
-			      <c:forEach items="${viewed.firstThings}" var="thing">
-			        <div id="wrapper">
+<c:choose>
+<c:when test="${not empty viewed.firstThings}">
+    <c:forEach items="${viewed.firstThings}" var="thing">
+    <c:if test="${viewed.following or thing.visibility=='public'}">
+	<div id="wrapper">
 	<div class="box form">
 	<div class="title">
 		<span class="label">${thing.title}</span>
@@ -127,15 +128,16 @@
     </form>
     </div>
 </div>
-			      </c:forEach>
-			  </c:when>
-			  <c:otherwise>
-			  <div id="wrapper">
-				<div class="box form" id="general">
-			    ${viewed.username} hasn't done any first things yet.
-			    </div>
-			    </div>
-			  </c:otherwise>
+  </c:if>
+  </c:forEach>
+</c:when>
+<c:otherwise>
+ <div id="wrapper">
+<div class="box form" id="general">
+   ${viewed.username} hasn't done any first things yet.
+   </div>
+   </div>
+ </c:otherwise>
 			</c:choose>
 </div>
 

@@ -27,7 +27,6 @@ public class FTPFunctions {
 				new PrintWriter(System.out)));
 		int reply;
 		ftp.connect(host, port);
-		System.out.println("FTP URL is:" + ftp.getDefaultPort());
 		reply = ftp.getReplyCode();
 		if (!FTPReply.isPositiveCompletion(reply)) {
 			ftp.disconnect();
