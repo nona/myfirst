@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.myfirst.domain.User;
 import org.myfirst.dto.Mapper;
 import org.myfirst.dto.UserDto;
-import org.myfirst.service.ThingService;
 import org.myfirst.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,9 +21,6 @@ public class SearchController {
 
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private ThingService thingService;
 	
 	
     @RequestMapping(value = "/search", method = RequestMethod.GET, headers = "Accept=text/html")
